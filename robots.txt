@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://www.drrullianpinheiro.com.br/sitemap.xml
+
