@@ -345,18 +345,8 @@
         }, 10);
       }, 4000);
 
-      let lastScroll = 0;
-      window.addEventListener('scroll', () => {
-        const currentScroll = window.pageYOffset;
-        
-        if (currentScroll > 300) {
-          whatsappFloat.classList.add('visible');
-        } else {
-          whatsappFloat.classList.remove('visible');
-        }
-        
-        lastScroll = currentScroll;
-      });
+      // Botão visível desde o topo
+      whatsappFloat.classList.add('visible');
     }
 
     if (document.readyState === 'loading') {
