@@ -2404,6 +2404,61 @@ footer::after {
   z-index: 1;
 }
 
+.review-date {
+  display: block;
+  font-size: 0.85em;
+  color: #888;
+  margin-top: 5px;
+  font-weight: 400;
+}
+
+.google-reviews-badge {
+  text-align: center;
+  margin: 20px auto 30px;
+  max-width: 600px;
+  padding: 15px 25px;
+  background: linear-gradient(135deg, rgba(114, 47, 55, 0.1), rgba(139, 62, 71, 0.05));
+  border-radius: 12px;
+  border: 2px solid rgba(114, 47, 55, 0.2);
+}
+
+.reviews-badge-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.google-logo {
+  font-size: 1.5em;
+}
+
+.rating-text {
+  font-size: 1.1em;
+  color: #333;
+}
+
+.rating-text strong {
+  color: #722F37;
+  font-size: 1.3em;
+  font-weight: 700;
+}
+
+.review-count {
+  color: #666;
+  font-size: 0.9em;
+  font-weight: 400;
+}
+
+.reviews-error {
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: 10px;
+  padding: 20px;
+  color: #856404;
+}
+
 .btn-avaliacoes {
   background: linear-gradient(135deg, #880606, #a80707);
   color: white;
@@ -2453,6 +2508,24 @@ footer::after {
     max-width: 100%;
     padding: 16px 30px;
     font-size: 0.95em;
+  }
+
+  .google-reviews-badge {
+    padding: 12px 20px;
+    margin: 15px auto 25px;
+  }
+
+  .reviews-badge-content {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .rating-text {
+    font-size: 1em;
+  }
+
+  .rating-text strong {
+    font-size: 1.2em;
   }
 }
 /* ===== NOVA SEÇÃO: APRESENTAÇÃO DO DOUTOR ===== */

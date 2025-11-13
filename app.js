@@ -403,3 +403,10 @@
         e.preventDefault();
       }
     });
+    
+      window.addEventListener('load', () => {
+      // pequeno atraso para sobrescrever a restauração automática
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+          }, 10);
+        });
