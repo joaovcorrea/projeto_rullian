@@ -204,7 +204,6 @@ class GoogleReviews {
       stars += '½';
     }
     
-    // Preencher com estrelas vazias
     const emptyStars = 5 - Math.ceil(rating);
     for (let i = 0; i < emptyStars; i++) {
       stars += '☆';
