@@ -680,7 +680,103 @@
 
   <script src="app.js"></script>
   <script src="google-reviews.js"></script>
-  <script async src="//www.instagram.com/embed.js"></script>
+  <script>
+    // Carregar e processar embeds do Instagram de forma mais robusta
+    (function() {
+      var scriptLoaded = false;
+      
+      function processEmbeds() {
+        if (window.instgrm && window.instgrm.Embeds) {
+          try {
+            window.instgrm.Embeds.process();
+          } catch (e) {
+            console.log('Erro ao processar embeds:', e);
+          }
+        }
+      }
+      
+      function loadInstagramScript() {
+        if (scriptLoaded || window.instgrm) {
+          processEmbeds();
+          return;
+        }
+        
+        scriptLoaded = true;
+        var script = document.createElement('script');
+        script.src = 'https://www.instagram.com/embed.js';
+        script.async = true;
+        script.crossOrigin = 'anonymous';
+        script.onload = function() {
+          setTimeout(processEmbeds, 300);
+        };
+        script.onerror = function() {
+          scriptLoaded = false;
+          // Tentar novamente após 2 segundos
+          setTimeout(loadInstagramScript, 2000);
+        };
+        document.body.appendChild(script);
+      }
+      
+      // Carregar quando o DOM estiver pronto
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+          setTimeout(loadInstagramScript, 200);
+        });
+      } else {
+        setTimeout(loadInstagramScript, 200);
+      }
+      
+      // Também carregar quando a página carregar completamente
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          if (!window.instgrm) {
+            loadInstagramScript();
+          } else {
+            processEmbeds();
+          }
+        }, 800);
+      });
+      
+      // Processar novamente quando os elementos ficarem visíveis (mobile)
+      if ('IntersectionObserver' in window) {
+        var observer = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              setTimeout(processEmbeds, 200);
+            }
+          });
+        }, { threshold: 0.1, rootMargin: '50px' });
+        
+        // Observar todos os embeds do Instagram
+        setTimeout(function() {
+          var embeds = document.querySelectorAll('.instagram-media');
+          embeds.forEach(function(el) {
+            observer.observe(el);
+          });
+          
+          // Se não encontrou nenhum embed, tentar processar novamente
+          if (embeds.length === 0) {
+            setTimeout(processEmbeds, 1000);
+          }
+        }, 1500);
+      }
+      
+      // Processar periodicamente para garantir que todos os embeds sejam carregados
+      var processInterval = setInterval(function() {
+        var unprocessed = document.querySelectorAll('.instagram-media:not(iframe)');
+        if (unprocessed.length > 0 && window.instgrm) {
+          processEmbeds();
+        } else if (unprocessed.length === 0) {
+          clearInterval(processInterval);
+        }
+      }, 2000);
+      
+      // Limpar intervalo após 30 segundos
+      setTimeout(function() {
+        clearInterval(processInterval);
+      }, 30000);
+    })();
+  </script>
 
   <!-- Schema.org Structured Data -->
   <script type="application/ld+json">
