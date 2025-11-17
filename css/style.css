@@ -487,6 +487,7 @@ h3::after {
 
 .texto-sobre {
   flex: 1 1 75%;
+  order: 1; /* Ordem padrão: primeiro */
 }
 
 .texto-sobre p {
@@ -502,19 +503,13 @@ h3::after {
   font-weight: 600;
 }
 
-.fotos-doutor {
-  flex: 1 1 10%;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
 /* Estilos das fotos do doutor agora são aplicados via carrossel */
 .fotos-doutor {
   flex: 1 1 10%;
   display: flex;
   flex-direction: column;
   gap: 20px;
+  order: 2; /* Ordem padrão: depois do texto */
 }
 
 .video-doutor-wrapper {
@@ -524,6 +519,7 @@ h3::after {
   justify-content: center;
   align-items: center;
   width: 100%;
+  order: 3; /* Ordem padrão: depois das fotos */
 }
 
 .video-doutor {
@@ -1265,8 +1261,16 @@ footer::after {
     flex-direction: column;
     align-items: center;
   }
-
+  
+  /* Inverter ordem no mobile: vídeo antes das fotos */
+  .video-doutor-wrapper {
+    order: 1; /* Vídeo primeiro no mobile */
+    margin-top: 0;
+    margin-bottom: 30px;
+  }
+  
   .fotos-doutor {
+    order: 2; /* Fotos depois do vídeo no mobile */
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
@@ -1274,10 +1278,6 @@ footer::after {
 
   .fotos-doutor img {
     width: 45%;
-  }
-
-  .video-doutor-wrapper {
-    margin-top: 20px;
   }
 
   .video-doutor {
