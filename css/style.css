@@ -544,6 +544,11 @@ h3::after {
   width: 100% !important;
   touch-action: manipulation !important;
   pointer-events: auto !important;
+  -webkit-touch-callout: none !important;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 /* ======== CONSULTÓRIO ======== */
@@ -629,6 +634,11 @@ h3::after {
   width: 100% !important;
   touch-action: manipulation !important;
   pointer-events: auto !important;
+  -webkit-touch-callout: none !important;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 /* ======== SERVIÇOS ======== */
@@ -928,6 +938,11 @@ h3::after {
   min-height: 350px !important;
   width: 100% !important;
   touch-action: manipulation !important;
+  -webkit-touch-callout: none !important;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .beneficio-item {
@@ -2590,6 +2605,11 @@ footer::after {
   display: block !important;
   pointer-events: auto !important;
   touch-action: manipulation !important;
+  -webkit-touch-callout: none !important;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 /* Prevenir redirecionamento em links do Instagram dentro dos vídeos */
