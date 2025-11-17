@@ -517,6 +517,28 @@ h3::after {
   gap: 20px;
 }
 
+.video-doutor-wrapper {
+  flex: 1 1 100%;
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.video-doutor {
+  max-width: 540px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.video-doutor blockquote {
+  margin: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 100% !important;
+}
+
 /* ======== CONSULTÓRIO ======== */
 .consultorio {
   background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 30%, #f5f7fa 70%, #ffffff 100%);
@@ -567,6 +589,30 @@ h3::after {
   z-index: 1;
 }
 
+.video-consultorio-wrapper {
+  margin-top: 0;
+  margin-bottom: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.video-consultorio {
+  max-width: 540px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.video-consultorio blockquote {
+  margin: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 100% !important;
+}
+
 /* ======== SERVIÇOS ======== */
 .servicos {
   background: linear-gradient(180deg, #fafafa 0%, #ffffff 40%, #f8f9fa 80%, #ffffff 100%);
@@ -610,14 +656,25 @@ h3::after {
 }
 
 .cards-servicos {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 35px;
-  max-width: 1200px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+  max-width: 1400px;
   margin: 0 auto;
   position: relative;
   z-index: 1;
+}
+
+@media (max-width: 1200px) {
+  .cards-servicos {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .cards-servicos {
+    grid-template-columns: 1fr;
+  }
 }
 
 .descricao-servicos {
@@ -651,9 +708,11 @@ h3::after {
 }
 
 .card-servico {
-  width: 320px;
+  width: 100%;
   max-width: 100%;
   min-height: 480px;
+  display: flex;
+  flex-direction: column;
 }
 
 @keyframes cardFadeIn {
@@ -809,6 +868,44 @@ h3::after {
   padding-top: 20px;
   border-top: 2px solid rgba(136, 6, 6, 0.1);
   text-align: left;
+}
+
+.card-video {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 2px solid rgba(136, 6, 6, 0.1);
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-video blockquote {
+  margin: 0 auto !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 100% !important;
+  pointer-events: auto;
+  position: relative;
+  z-index: 1;
+  display: block;
+  text-align: center;
+}
+
+.card-video blockquote > * {
+  margin: 0 auto;
+  display: block;
+}
+
+.card-video iframe {
+  pointer-events: auto !important;
+  z-index: 2;
+  position: relative;
+  margin: 0 auto;
+  display: block;
 }
 
 .beneficio-item {
@@ -1153,6 +1250,14 @@ footer::after {
     width: 45%;
   }
 
+  .video-doutor-wrapper {
+    margin-top: 20px;
+  }
+
+  .video-doutor {
+    max-width: 100%;
+  }
+
   .descricao-servicos {
     font-size: 1em;
     margin-bottom: 40px;
@@ -1164,7 +1269,7 @@ footer::after {
 
   .card-servico {
     width: 100%;
-    max-width: 400px;
+    max-width: 100%;
     min-height: auto;
     padding: 30px 25px;
   }
@@ -2282,6 +2387,241 @@ footer::after {
   }
 }
 /* ============================= */
+/* SEÇÃO - SORRISOS RECUPERADOS */
+/* ============================= */
+
+.sorrisos-recuperados {
+  background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 30%, #f5f5f5 70%, #f0f0f0 100%);
+  padding: 90px 20px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  border-top: 2px solid rgba(136, 6, 6, 0.08);
+}
+
+.sorrisos-recuperados::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(136, 6, 6, 0.2), rgba(136, 6, 6, 0.3), rgba(136, 6, 6, 0.2), transparent);
+}
+
+.sorrisos-recuperados::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(26, 26, 26, 0.1), transparent);
+}
+
+.sorrisos-recuperados h3 {
+  color: #880606;
+  font-size: 2.2em;
+  margin-bottom: 15px;
+}
+
+.subtitulo-sorrisos {
+  color: #555;
+  font-size: 1.1rem;
+  max-width: 800px;
+  margin: 0 auto 50px;
+  line-height: 1.8;
+  position: relative;
+  z-index: 1;
+}
+
+.videos-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto 50px;
+  position: relative;
+  z-index: 1;
+}
+
+.video-card {
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(136, 6, 6, 0.05);
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 2px solid transparent;
+  position: relative;
+  animation: cardFadeIn 0.8s ease-out;
+}
+
+.video-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, #880606, #a80707, #880606);
+  background-size: 200% 100%;
+  transform: scaleX(0);
+  transition: transform 0.4s ease;
+  z-index: 1;
+  animation: gradientMove 3s ease infinite;
+}
+
+.video-card:hover::before {
+  transform: scaleX(1);
+}
+
+.video-card:hover {
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: 
+    0 18px 45px rgba(136, 6, 6, 0.25),
+    0 0 0 2px rgba(136, 6, 6, 0.15),
+    0 0 40px rgba(136, 6, 6, 0.15);
+  border-color: rgba(136, 6, 6, 0.2);
+}
+
+.video-wrapper {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+  height: 0;
+  overflow: hidden;
+  background: #000;
+  border-radius: 15px 15px 0 0;
+}
+
+.video-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 15px 15px 0 0;
+}
+
+.video-wrapper.instagram-embed {
+  padding-bottom: 0;
+  height: auto;
+  background: transparent;
+}
+
+.video-wrapper.instagram-embed blockquote {
+  margin: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 100% !important;
+}
+
+.video-info {
+  padding: 25px 20px;
+  text-align: left;
+}
+
+.video-info h4 {
+  color: #880606;
+  font-size: 1.3rem;
+  margin: 0 0 10px 0;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.video-info p {
+  color: #555;
+  font-size: 0.98rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.sorrisos-cta {
+  max-width: 800px;
+  margin: 50px auto 0;
+  padding: 40px 30px;
+  background: linear-gradient(135deg, rgba(136, 6, 6, 0.05), rgba(136, 6, 6, 0.02));
+  border-radius: 20px;
+  border: 2px solid rgba(136, 6, 6, 0.1);
+  position: relative;
+  z-index: 1;
+}
+
+.sorrisos-cta p {
+  color: #444;
+  font-size: 1.15rem;
+  margin-bottom: 25px;
+  line-height: 1.8;
+  font-weight: 500;
+}
+
+.sorrisos-cta .btn-agendar {
+  margin-top: 0;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .sorrisos-recuperados {
+    padding: 60px 15px;
+  }
+
+  .sorrisos-recuperados h3 {
+    font-size: 1.6rem;
+  }
+
+  .subtitulo-sorrisos {
+    font-size: 1rem;
+    margin-bottom: 30px;
+  }
+
+  .videos-container {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    margin-bottom: 40px;
+  }
+
+  .video-card {
+    border-radius: 15px;
+  }
+
+  .video-wrapper {
+    border-radius: 15px 15px 0 0;
+  }
+
+  .video-info {
+    padding: 20px 15px;
+  }
+
+  .video-info h4 {
+    font-size: 1.1rem;
+  }
+
+  .video-info p {
+    font-size: 0.95rem;
+  }
+
+  .sorrisos-cta {
+    padding: 30px 20px;
+    margin-top: 30px;
+  }
+
+  .sorrisos-cta p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+
+  .sorrisos-cta .btn-agendar {
+    width: 100%;
+    max-width: 100%;
+    padding: 16px 30px;
+    font-size: 0.95em;
+  }
+}
+
+/* ============================= */
 /* SEÇÃO - AVALIAÇÕES DE PACIENTES */
 /* ============================= */
 
@@ -2751,6 +3091,12 @@ footer::after {
   color: #ffffff;
 }
 
+.social-links-header a.tiktok:hover { 
+  background-color: #000000;
+  border-color: #000000;
+  color: #ffffff;
+}
+
 
 /* ===== BOTÃO FLUTUANTE WHATSAPP ===== */
 .whatsapp-float {
@@ -3054,6 +3400,14 @@ footer::after {
     height: 250px;
   }
 
+  .video-consultorio-wrapper {
+    margin-top: 30px;
+  }
+
+  .video-consultorio {
+    max-width: 100%;
+  }
+
   .fotos-doutor .carousel-slide,
   .fotos-doutor .carousel-slide img {
     height: 300px;
@@ -3078,7 +3432,8 @@ footer::after {
 section,
 .card,
 .card-mais,
-.dif-item {
+.dif-item,
+.video-card {
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 0.6s ease, transform 0.6s ease;
@@ -3087,7 +3442,8 @@ section,
 section.animate-in,
 .card.animate-in,
 .card-mais.animate-in,
-.dif-item.animate-in {
+.dif-item.animate-in,
+.video-card.animate-in {
   opacity: 1;
   transform: translateY(0);
 }
@@ -3150,6 +3506,12 @@ header ~ section:first-of-type {
 .social-links a.linktree:hover {
   background-color: #43e55c;
   border-color: #43e55c;
+  color: #ffffff;
+}
+
+.social-links a.tiktok:hover {
+  background-color: #000000;
+  border-color: #000000;
   color: #ffffff;
 }
 

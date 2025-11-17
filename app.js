@@ -386,7 +386,7 @@
         observer.observe(section);
       });
 
-      document.querySelectorAll('.card, .card-mais, .dif-item').forEach(el => {
+      document.querySelectorAll('.card, .card-mais, .dif-item, .video-card').forEach(el => {
         observer.observe(el);
       });
     }
