@@ -400,12 +400,16 @@ window.addEventListener('load', () => {
 (function() {
   'use strict';
   
+  // Detecção mais robusta de mobile (incluindo Safari iOS)
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
                    (window.innerWidth <= 768) || 
-                   ('ontouchstart' in window);
+                   (window.screen && window.screen.width <= 768) ||
+                   ('ontouchstart' in window) ||
+                   (navigator.maxTouchPoints && navigator.maxTouchPoints > 1);
   
   let scriptLoaded = false;
   let processingInterval = null;
+  let mobileProcessingCount = 0;
   
   // Função para construir URL de embed corretamente
   function buildEmbedUrl(permalink) {
@@ -451,7 +455,21 @@ window.addEventListener('load', () => {
     iframe.setAttribute('playsinline', 'true');
     iframe.setAttribute('loading', 'lazy');
     iframe.setAttribute('frameborder', '0');
-    iframe.style.cssText = 'width: 100%; border: none; display: block; pointer-events: auto; touch-action: manipulation; visibility: visible; opacity: 1; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none;';
+    
+    // Estilos inline explícitos para garantir visibilidade no mobile
+    iframe.style.width = '100%';
+    iframe.style.maxWidth = '100%';
+    iframe.style.border = 'none';
+    iframe.style.display = 'block';
+    iframe.style.visibility = 'visible';
+    iframe.style.opacity = '1';
+    iframe.style.pointerEvents = 'auto';
+    iframe.style.touchAction = 'manipulation';
+    iframe.style.webkitTouchCallout = 'none';
+    iframe.style.webkitUserSelect = 'none';
+    iframe.style.userSelect = 'none';
+    iframe.style.position = 'relative';
+    iframe.style.zIndex = '1';
     
     return iframe;
   }
@@ -476,35 +494,86 @@ window.addEventListener('load', () => {
   
   // Função para substituir blockquote por iframe
   function replaceBlockquoteWithIframe(blockquote) {
-    if (blockquote.querySelector('iframe')) return; // Já tem iframe
+    // Verificar se já tem iframe
+    if (blockquote.querySelector('iframe')) {
+      return true; // Já processado
+    }
     
     const permalink = blockquote.getAttribute('data-instgrm-permalink');
-    if (!permalink) return;
+    if (!permalink) {
+      return false;
+    }
     
     const iframe = createInstagramIframe(permalink);
-    if (!iframe) return;
+    if (!iframe) {
+      return false;
+    }
     
     const container = blockquote.closest('.video-wrapper, .card-video, .video-doutor, .video-consultorio, .video-doutor-wrapper, .video-consultorio-wrapper');
     setIframeHeight(iframe, container);
     
-    // Limpar blockquote e adicionar iframe
+    // Garantir que o container seja visível
+    if (container) {
+      container.style.display = 'block';
+      container.style.visibility = 'visible';
+      container.style.opacity = '1';
+    }
+    
+    // Preservar estilos do blockquote
+    const blockquoteStyles = blockquote.getAttribute('style') || '';
+    
+    // Limpar conteúdo e adicionar iframe
     blockquote.innerHTML = '';
+    blockquote.setAttribute('style', blockquoteStyles);
     blockquote.appendChild(iframe);
+    
+    // Garantir que o blockquote seja visível (forçar com !important via setProperty)
+    blockquote.style.setProperty('display', 'block', 'important');
+    blockquote.style.setProperty('visibility', 'visible', 'important');
+    blockquote.style.setProperty('opacity', '1', 'important');
+    blockquote.style.setProperty('width', '100%', 'important');
+    blockquote.style.setProperty('max-width', '100%', 'important');
+    blockquote.style.setProperty('min-width', '100%', 'important');
+    blockquote.style.setProperty('margin', '0 auto', 'important');
+    blockquote.style.setProperty('padding', '0', 'important');
     
     // Quando carregar, garantir interatividade
     iframe.addEventListener('load', function() {
       this.style.pointerEvents = 'auto';
       this.style.touchAction = 'manipulation';
+      this.style.visibility = 'visible';
+      this.style.opacity = '1';
+      this.style.display = 'block';
     });
+    
+    // Fallback: se não carregar em 5 segundos, tentar recarregar
+    setTimeout(function() {
+      if (!iframe.contentDocument && !iframe.contentWindow) {
+        iframe.src = iframe.src; // Recarregar
+      }
+    }, 5000);
+    
+    return true;
   }
   
   // Função para processar todos os blockquotes
   function processAllBlockquotes() {
-    document.querySelectorAll('.instagram-media[data-instgrm-permalink]').forEach(blockquote => {
+    const blockquotes = document.querySelectorAll('.instagram-media[data-instgrm-permalink]');
+    let processed = 0;
+    
+    blockquotes.forEach(blockquote => {
       if (!blockquote.querySelector('iframe')) {
-        replaceBlockquoteWithIframe(blockquote);
+        if (replaceBlockquoteWithIframe(blockquote)) {
+          processed++;
+        }
       }
     });
+    
+    if (isMobile && processed > 0) {
+      mobileProcessingCount++;
+    }
+    
+    return processed;
   }
   
   // Função para configurar iframes existentes
@@ -528,8 +597,30 @@ window.addEventListener('load', () => {
         iframe.setAttribute('mozallowfullscreen', 'true');
         iframe.setAttribute('scrolling', 'no');
         iframe.setAttribute('playsinline', 'true');
-        iframe.style.pointerEvents = 'auto';
-        iframe.style.touchAction = 'manipulation';
+        
+        // Garantir visibilidade (especialmente no mobile)
+        iframe.style.setProperty('display', 'block', 'important');
+        iframe.style.setProperty('visibility', 'visible', 'important');
+        iframe.style.setProperty('opacity', '1', 'important');
+        iframe.style.setProperty('width', '100%', 'important');
+        iframe.style.setProperty('pointer-events', 'auto', 'important');
+        iframe.style.setProperty('touch-action', 'manipulation', 'important');
+        
+        // Garantir que o blockquote pai também seja visível
+        const blockquote = iframe.closest('.instagram-media');
+        if (blockquote) {
+          blockquote.style.setProperty('display', 'block', 'important');
+          blockquote.style.setProperty('visibility', 'visible', 'important');
+          blockquote.style.setProperty('opacity', '1', 'important');
+        }
+        
+        // Garantir que o container também seja visível
+        const container = iframe.closest('.video-wrapper, .card-video, .video-doutor, .video-consultorio');
+        if (container) {
+          container.style.setProperty('display', 'block', 'important');
+          container.style.setProperty('visibility', 'visible', 'important');
+          container.style.setProperty('opacity', '1', 'important');
+        }
       }
     });
   }
@@ -570,19 +661,28 @@ window.addEventListener('load', () => {
   
   // No mobile: criar iframes diretamente
   if (isMobile) {
+    // Função para inicializar no mobile
+    function initMobileEmbeds() {
+      processAllBlockquotes();
+      configureExistingIframes();
+    }
+    
     // Processar imediatamente
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', function() {
-        processAllBlockquotes();
+        initMobileEmbeds();
       });
     } else {
-      processAllBlockquotes();
+      initMobileEmbeds();
     }
     
-    // Processar após delays
-    setTimeout(processAllBlockquotes, 500);
-    setTimeout(processAllBlockquotes, 1500);
-    setTimeout(processAllBlockquotes, 3000);
+    // Processar após delays múltiplos para garantir
+    setTimeout(initMobileEmbeds, 100);
+    setTimeout(initMobileEmbeds, 500);
+    setTimeout(initMobileEmbeds, 1000);
+    setTimeout(initMobileEmbeds, 1500);
+    setTimeout(initMobileEmbeds, 3000);
+    setTimeout(initMobileEmbeds, 5000);
     
     // Observer para novos blockquotes
     if ('IntersectionObserver' in window) {
@@ -592,10 +692,11 @@ window.addEventListener('load', () => {
             const blockquote = entry.target;
             if (blockquote.classList.contains('instagram-media') && !blockquote.querySelector('iframe')) {
               replaceBlockquoteWithIframe(blockquote);
+              configureExistingIframes();
             }
           }
         });
-      }, { threshold: 0.1, rootMargin: '100px' });
+      }, { threshold: 0.1, rootMargin: '200px' });
       
       setTimeout(function() {
         document.querySelectorAll('.instagram-media[data-instgrm-permalink]').forEach(function(el) {
@@ -604,15 +705,33 @@ window.addEventListener('load', () => {
       }, 500);
     }
     
-    // Monitorar continuamente
+    // Monitorar continuamente (mais agressivo no mobile)
     processingInterval = setInterval(function() {
-      processAllBlockquotes();
+      const processed = processAllBlockquotes();
       configureExistingIframes();
-    }, 2000);
+      
+      // Se processou algo, continuar monitorando
+      if (processed === 0 && mobileProcessingCount > 3) {
+        // Se já processou várias vezes e não há mais nada, reduzir frequência
+        clearInterval(processingInterval);
+        processingInterval = setInterval(function() {
+          processAllBlockquotes();
+          configureExistingIframes();
+        }, 5000);
+      }
+    }, 1000);
     
+    // Parar após 60 segundos
     setTimeout(function() {
       if (processingInterval) clearInterval(processingInterval);
-    }, 30000);
+    }, 60000);
+    
+    // Também processar quando a página ficar visível
+    document.addEventListener('visibilitychange', function() {
+      if (!document.hidden) {
+        setTimeout(initMobileEmbeds, 500);
+      }
+    });
   } else {
     // Desktop: usar script oficial
     if (document.readyState === 'loading') {
