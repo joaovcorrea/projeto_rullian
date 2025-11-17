@@ -21,25 +21,48 @@
 
 class GoogleReviews {
   constructor() {
-    // CONFIGURAÇÃO - SUBSTITUA ESTES VALORES
-    this.apiKey = 'YOUR_API_KEY'; // Sua chave de API do Google
-    this.placeId = 'YOUR_PLACE_ID'; // Place ID do estabelecimento
+    // As chaves serão carregadas do backend
+    this.apiKey = '';
+    this.placeId = '';
     this.maxReviews = 6; // Número máximo de avaliações para exibir
     
     this.reviewsContainer = document.querySelector('.cards-avaliacoes');
-    this.init();
+    this.loadConfigFromBackend().then(() => this.init());
+  }
+  
+  async loadConfigFromBackend() {
+    try {
+      const response = await fetch('/api/config');
+      const data = await response.json();
+      
+      if (data.success) {
+        this.apiKey = data.apiKey || '';
+        this.placeId = data.placeId || '';
+        
+        if (!this.apiKey || !this.placeId) {
+          console.warn('Google Reviews: Chaves API não configuradas no backend');
+        }
+      } else {
+        console.warn('Google Reviews: Erro ao carregar configuração do backend');
+      }
+    } catch (error) {
+      console.warn('Google Reviews: Não foi possível conectar ao backend. Usando valores padrão.', error);
+      // Fallback: tentar usar valores padrão se o backend não estiver disponível
+      this.apiKey = '';
+      this.placeId = '';
+    }
   }
 
   async init() {
-    if (!this.apiKey || this.apiKey === 'YOUR_API_KEY') {
+    if (!this.apiKey || this.apiKey === '') {
       console.warn('Google Reviews: Chave de API não configurada');
-      this.showErrorMessage('Avaliações do Google não configuradas. Configure a chave de API.');
+      this.showErrorMessage('Avaliações do Google não configuradas. Configure a chave de API no backend.');
       return;
     }
 
-    if (!this.placeId || this.placeId === 'YOUR_PLACE_ID') {
+    if (!this.placeId || this.placeId === '') {
       console.warn('Google Reviews: Place ID não configurado');
-      this.showErrorMessage('Place ID não configurado. Configure o Place ID do estabelecimento.');
+      this.showErrorMessage('Place ID não configurado. Configure o Place ID no backend.');
       return;
     }
 

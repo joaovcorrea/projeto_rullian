@@ -2437,12 +2437,18 @@ footer::after {
 
 .videos-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-  gap: 35px;
-  max-width: 1400px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  max-width: 1220px;
   margin: 0 auto 50px;
   position: relative;
   z-index: 1;
+}
+
+@media (max-width: 1200px) {
+  .videos-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .video-card {
@@ -2456,7 +2462,10 @@ footer::after {
   border: 2px solid transparent;
   position: relative;
   animation: cardFadeIn 0.8s ease-out;
-  min-width: 380px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 750px;
 }
 
 .video-card::before {
@@ -2510,12 +2519,13 @@ footer::after {
   padding-bottom: 0;
   height: auto;
   background: transparent;
-  min-height: 500px;
+  min-height: 650px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   width: 100%;
+  overflow: hidden;
 }
 
 .video-wrapper.instagram-embed blockquote {
@@ -2531,14 +2541,40 @@ footer::after {
 .video-wrapper.instagram-embed iframe {
   width: 100% !important;
   max-width: 100% !important;
-  min-height: 500px !important;
+  min-height: 650px !important;
   border: none !important;
   display: block !important;
+  pointer-events: auto !important;
+  touch-action: manipulation !important;
+}
+
+/* Prevenir redirecionamento em links do Instagram dentro dos vídeos */
+.video-wrapper.instagram-embed a[href*="instagram.com"]:not([href*="/embed/"]):not([href*="instagram.com/embed"]),
+.video-card a[href*="instagram.com"]:not([href*="/embed/"]):not([href*="instagram.com/embed"]) {
+  pointer-events: none !important;
+  cursor: default !important;
+  user-select: none !important;
+}
+
+/* Permitir interação apenas com o iframe */
+.video-wrapper.instagram-embed iframe,
+.video-card iframe {
+  position: relative;
+  z-index: 10;
+}
+
+/* Bloquear interação com links problemáticos dentro dos containers */
+.video-wrapper.instagram-embed blockquote a[href*="instagram.com"]:not([href*="/embed/"]):not([href*="instagram.com/embed"]),
+.video-card blockquote a[href*="instagram.com"]:not([href*="/embed/"]):not([href*="instagram.com/embed"]) {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
 .video-info {
   padding: 25px 20px;
-  text-align: left;
+  text-align: center;
 }
 
 .video-info h4 {
@@ -2603,6 +2639,7 @@ footer::after {
 
   .video-card {
     border-radius: 15px;
+    width: 100%;
   }
 
   .video-wrapper {
@@ -2610,20 +2647,15 @@ footer::after {
   }
 
   .video-wrapper.instagram-embed {
-    min-height: 400px;
+    min-height: 550px;
   }
 
   .video-wrapper.instagram-embed iframe {
-    min-height: 400px !important;
+    min-height: 550px !important;
   }
-
-  .videos-container {
-    grid-template-columns: 1fr;
-    gap: 30px;
-  }
-
+  
   .video-card {
-    min-width: 100%;
+    min-height: 650px;
   }
 
   .video-info {

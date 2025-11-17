@@ -482,7 +482,7 @@
     <div class="videos-container">
       <div class="video-card">
         <div class="video-wrapper instagram-embed">
-          <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/REEL_ID_1/" data-instgrm-version="14" data-instgrm-captioned style="background:#FFF; border:0; border-radius:0; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px auto; max-width:100%; min-width:326px; padding:0; width:100%; -webkit-border-radius:0; -moz-border-radius:0;"></blockquote>
+          <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DJpwDq8SufN/" data-instgrm-version="14" data-instgrm-captioned style="background:#FFF; border:0; border-radius:0; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px auto; max-width:100%; min-width:326px; padding:0; width:100%; -webkit-border-radius:0; -moz-border-radius:0;"></blockquote>
         </div>
         <div class="video-info">
           <h4>Transformação Completa</h4>
@@ -491,7 +491,7 @@
       </div>
       <div class="video-card">
         <div class="video-wrapper instagram-embed">
-          <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DJpwDq8SufN/" data-instgrm-version="14" data-instgrm-captioned style="background:#FFF; border:0; border-radius:0; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px auto; max-width:100%; min-width:326px; padding:0; width:100%; -webkit-border-radius:0; -moz-border-radius:0;"></blockquote>
+          <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DN34CLyknDf" data-instgrm-version="14" data-instgrm-captioned style="background:#FFF; border:0; border-radius:0; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px auto; max-width:100%; min-width:326px; padding:0; width:100%; -webkit-border-radius:0; -moz-border-radius:0;"></blockquote>
         </div>
         <div class="video-info">
           <h4>Resultado Impressionante</h4>
@@ -500,7 +500,7 @@
       </div>
       <div class="video-card">
         <div class="video-wrapper instagram-embed">
-          <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/REEL_ID_3/" data-instgrm-version="14" data-instgrm-captioned style="background:#FFF; border:0; border-radius:0; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px auto; max-width:100%; min-width:326px; padding:0; width:100%; -webkit-border-radius:0; -moz-border-radius:0;"></blockquote>
+          <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DObrC6ykh7d" data-instgrm-version="14" data-instgrm-captioned style="background:#FFF; border:0; border-radius:0; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px auto; max-width:100%; min-width:326px; padding:0; width:100%; -webkit-border-radius:0; -moz-border-radius:0;"></blockquote>
         </div>
         <div class="video-info">
           <h4>Experiência Positiva</h4>
@@ -778,10 +778,89 @@
       
       // Prevenir redirecionamento no mobile e garantir que vídeos executem inline
       function setupIframesForMobile() {
+        // Proteção máxima: interceptar window.location para prevenir redirecionamentos
+        var originalLocation = window.location;
+        var originalAssign = window.location.assign;
+        var originalReplace = window.location.replace;
+        var originalHref = Object.getOwnPropertyDescriptor(window.location, 'href');
+        
+        // Interceptar tentativas de mudança de URL
+        Object.defineProperty(window.location, 'href', {
+          set: function(url) {
+            if (url && url.includes('instagram.com') && !url.includes('/embed/')) {
+              console.log('Redirecionamento para Instagram bloqueado:', url);
+              return;
+            }
+            if (originalHref && originalHref.set) {
+              originalHref.set.call(window.location, url);
+            }
+          },
+          get: function() {
+            if (originalHref && originalHref.get) {
+              return originalHref.get.call(window.location);
+            }
+            return originalLocation.href;
+          }
+        });
+        
+        // Interceptar TODOS os cliques na página que possam causar redirecionamento
+        document.addEventListener('click', function(e) {
+          var target = e.target;
+          var link = target.closest('a[href*="instagram.com"]');
+          
+          // Se o clique foi em um link do Instagram dentro de um container de vídeo
+          if (link && (link.closest('.video-wrapper.instagram-embed') || link.closest('.video-card'))) {
+            // Verificar se não é um link de embed
+            if (!link.href.includes('/embed/') && !link.href.includes('instagram.com/embed')) {
+              e.preventDefault();
+              e.stopPropagation();
+              e.stopImmediatePropagation();
+              console.log('Clique em link do Instagram bloqueado');
+              return false;
+            }
+          }
+        }, true);
+        
+        // Interceptar mousedown (antes do click)
+        document.addEventListener('mousedown', function(e) {
+          var link = e.target.closest('a[href*="instagram.com"]');
+          if (link && (link.closest('.video-wrapper.instagram-embed') || link.closest('.video-card'))) {
+            if (!link.href.includes('/embed/') && !link.href.includes('instagram.com/embed')) {
+              e.preventDefault();
+              e.stopPropagation();
+              e.stopImmediatePropagation();
+              return false;
+            }
+          }
+        }, true);
+        
+        // Interceptar toques no mobile
+        document.addEventListener('touchstart', function(e) {
+          var link = e.target.closest('a[href*="instagram.com"]');
+          if (link && (link.closest('.video-wrapper.instagram-embed') || link.closest('.video-card'))) {
+            if (!link.href.includes('/embed/') && !link.href.includes('instagram.com/embed')) {
+              e.preventDefault();
+              e.stopPropagation();
+              e.stopImmediatePropagation();
+              return false;
+            }
+          }
+        }, true);
+        
+        // Interceptar antesunload para prevenir navegação
+        window.addEventListener('beforeunload', function(e) {
+          if (document.referrer && document.referrer.includes('instagram.com') && !document.referrer.includes('/embed/')) {
+            e.preventDefault();
+            e.returnValue = '';
+            return '';
+          }
+        });
+        
+        // Configurar iframes
         document.querySelectorAll('.instagram-media iframe, .video-wrapper iframe, .card-video iframe').forEach(function(iframe) {
           if (iframe && iframe.src && iframe.src.includes('instagram.com')) {
             // Adicionar atributos para garantir execução inline no mobile
-            iframe.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture; encrypted-media');
+            iframe.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture; encrypted-media; accelerometer; gyroscope');
             iframe.setAttribute('allowfullscreen', 'true');
             iframe.setAttribute('webkitallowfullscreen', 'true');
             iframe.setAttribute('mozallowfullscreen', 'true');
@@ -789,28 +868,45 @@
             
             // Prevenir que links dentro do iframe redirecionem
             iframe.style.pointerEvents = 'auto';
-            
-            // Remover qualquer link que possa causar redirecionamento
-            var blockquote = iframe.closest('.instagram-media');
-            if (blockquote) {
-              var links = blockquote.querySelectorAll('a[href*="instagram.com"]');
-              links.forEach(function(link) {
-                link.addEventListener('click', function(e) {
-                  // Não prevenir completamente, mas garantir que o iframe seja focado
-                  if (iframe) {
-                    iframe.focus();
-                  }
-                });
-              });
-            }
+            iframe.style.touchAction = 'manipulation';
           }
         });
+        
+        // Remover ou desabilitar links do Instagram que causam redirecionamento
+        function disableInstagramLinks() {
+          document.querySelectorAll('.video-wrapper.instagram-embed a[href*="instagram.com"], .video-card a[href*="instagram.com"]').forEach(function(link) {
+            if (!link.href.includes('/embed/') && !link.href.includes('instagram.com/embed')) {
+              // Remover todos os event listeners
+              var newLink = link.cloneNode(true);
+              link.parentNode.replaceChild(newLink, link);
+              
+              // Desabilitar completamente
+              newLink.setAttribute('href', 'javascript:void(0)');
+              newLink.style.pointerEvents = 'none';
+              newLink.style.cursor = 'default';
+              newLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                return false;
+              }, true);
+            }
+          });
+        }
+        
+        // Executar múltiplas vezes para pegar links que são adicionados dinamicamente
+        setTimeout(disableInstagramLinks, 1000);
+        setTimeout(disableInstagramLinks, 3000);
+        setTimeout(disableInstagramLinks, 5000);
+        setTimeout(disableInstagramLinks, 8000);
+        setTimeout(disableInstagramLinks, 12000);
       }
       
-      // Executar após processar embeds
-      setTimeout(setupIframesForMobile, 2000);
-      setTimeout(setupIframesForMobile, 4000);
-      setTimeout(setupIframesForMobile, 6000);
+      // Executar após processar embeds (múltiplas tentativas para garantir)
+      setTimeout(setupIframesForMobile, 1000);
+      setTimeout(setupIframesForMobile, 3000);
+      setTimeout(setupIframesForMobile, 5000);
+      setTimeout(setupIframesForMobile, 8000);
       
       // Monitorar quando novos iframes são adicionados
       var iframeObserver = new MutationObserver(function(mutations) {
