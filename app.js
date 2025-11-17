@@ -400,197 +400,14 @@ window.addEventListener('load', () => {
 (function() {
   'use strict';
   
-  // Detecção mais robusta de mobile (incluindo Safari iOS)
-  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
-                   (window.innerWidth <= 768) || 
-                   (window.screen && window.screen.width <= 768) ||
-                   ('ontouchstart' in window) ||
-                   (navigator.maxTouchPoints && navigator.maxTouchPoints > 1);
-  
   let scriptLoaded = false;
   let processingInterval = null;
-  let mobileProcessingCount = 0;
   
-  // Função para construir URL de embed corretamente
-  function buildEmbedUrl(permalink) {
-    if (!permalink) return null;
-    
-    let embedUrl = permalink.trim();
-    
-    // Garantir que seja uma URL completa
-    if (!embedUrl.startsWith('http')) {
-      embedUrl = 'https://' + embedUrl.replace(/^\/+/, '');
-    }
-    
-    // Converter para URL de embed
-    if (embedUrl.includes('/p/')) {
-      embedUrl = embedUrl.replace('/p/', '/embed/');
-    } else if (embedUrl.includes('/reel/')) {
-      embedUrl = embedUrl.replace('/reel/', '/embed/');
-    } else if (!embedUrl.includes('/embed/')) {
-      // Se não tem /p/ ou /reel/, tentar adicionar /embed/
-      embedUrl = embedUrl.replace(/instagram\.com\/([^\/]+)/, 'instagram.com/embed/$1');
-    }
-    
-    // Garantir que termine com /
-    if (!embedUrl.endsWith('/')) {
-      embedUrl += '/';
-    }
-    
-    return embedUrl;
-  }
-  
-  // Função para criar iframe com todas as configurações necessárias
-  function createInstagramIframe(permalink) {
-    const embedUrl = buildEmbedUrl(permalink);
-    if (!embedUrl) return null;
-    
-    const iframe = document.createElement('iframe');
-    iframe.src = embedUrl;
-    iframe.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture; encrypted-media; accelerometer; gyroscope; camera; microphone');
-    iframe.setAttribute('allowfullscreen', 'true');
-    iframe.setAttribute('webkitallowfullscreen', 'true');
-    iframe.setAttribute('mozallowfullscreen', 'true');
-    iframe.setAttribute('scrolling', 'no');
-    iframe.setAttribute('playsinline', 'true');
-    iframe.setAttribute('loading', 'lazy');
-    iframe.setAttribute('frameborder', '0');
-    
-    // Estilos inline explícitos para garantir visibilidade no mobile
-    iframe.style.width = '100%';
-    iframe.style.maxWidth = '100%';
-    iframe.style.border = 'none';
-    iframe.style.display = 'block';
-    iframe.style.visibility = 'visible';
-    iframe.style.opacity = '1';
-    iframe.style.pointerEvents = 'auto';
-    iframe.style.touchAction = 'manipulation';
-    iframe.style.webkitTouchCallout = 'none';
-    iframe.style.webkitUserSelect = 'none';
-    iframe.style.userSelect = 'none';
-    iframe.style.position = 'relative';
-    iframe.style.zIndex = '1';
-    
-    return iframe;
-  }
-  
-  // Função para configurar altura do iframe baseado no container
-  function setIframeHeight(iframe, container) {
-    if (!container) {
-      iframe.style.minHeight = '500px';
-      return;
-    }
-    
-    if (container.classList.contains('video-wrapper') || container.classList.contains('instagram-embed')) {
-      iframe.style.minHeight = '650px';
-    } else if (container.classList.contains('card-video')) {
-      iframe.style.minHeight = '350px';
-    } else if (container.classList.contains('video-doutor') || container.classList.contains('video-consultorio')) {
-      iframe.style.minHeight = '500px';
-    } else {
-      iframe.style.minHeight = '500px';
-    }
-  }
-  
-  // Função para substituir blockquote por iframe
-  function replaceBlockquoteWithIframe(blockquote) {
-    // Verificar se já tem iframe
-    if (blockquote.querySelector('iframe')) {
-      return true; // Já processado
-    }
-    
-    const permalink = blockquote.getAttribute('data-instgrm-permalink');
-    if (!permalink) {
-      return false;
-    }
-    
-    const iframe = createInstagramIframe(permalink);
-    if (!iframe) {
-      return false;
-    }
-    
-    const container = blockquote.closest('.video-wrapper, .card-video, .video-doutor, .video-consultorio, .video-doutor-wrapper, .video-consultorio-wrapper');
-    setIframeHeight(iframe, container);
-    
-    // Garantir que o container seja visível
-    if (container) {
-      container.style.display = 'block';
-      container.style.visibility = 'visible';
-      container.style.opacity = '1';
-    }
-    
-    // Preservar estilos do blockquote
-    const blockquoteStyles = blockquote.getAttribute('style') || '';
-    
-    // Limpar conteúdo e adicionar iframe
-    blockquote.innerHTML = '';
-    blockquote.setAttribute('style', blockquoteStyles);
-    blockquote.appendChild(iframe);
-    
-    // Garantir que o blockquote seja visível (forçar com !important via setProperty)
-    blockquote.style.setProperty('display', 'block', 'important');
-    blockquote.style.setProperty('visibility', 'visible', 'important');
-    blockquote.style.setProperty('opacity', '1', 'important');
-    blockquote.style.setProperty('width', '100%', 'important');
-    blockquote.style.setProperty('max-width', '100%', 'important');
-    blockquote.style.setProperty('min-width', '100%', 'important');
-    blockquote.style.setProperty('margin', '0 auto', 'important');
-    blockquote.style.setProperty('padding', '0', 'important');
-    
-    // Quando carregar, garantir interatividade
-    iframe.addEventListener('load', function() {
-      this.style.pointerEvents = 'auto';
-      this.style.touchAction = 'manipulation';
-      this.style.visibility = 'visible';
-      this.style.opacity = '1';
-      this.style.display = 'block';
-    });
-    
-    // Fallback: se não carregar em 5 segundos, tentar recarregar
-    setTimeout(function() {
-      if (!iframe.contentDocument && !iframe.contentWindow) {
-        iframe.src = iframe.src; // Recarregar
-      }
-    }, 5000);
-    
-    return true;
-  }
-  
-  // Função para processar todos os blockquotes
-  function processAllBlockquotes() {
-    const blockquotes = document.querySelectorAll('.instagram-media[data-instgrm-permalink]');
-    let processed = 0;
-    
-    blockquotes.forEach(blockquote => {
-      if (!blockquote.querySelector('iframe')) {
-        if (replaceBlockquoteWithIframe(blockquote)) {
-          processed++;
-        }
-      }
-    });
-    
-    if (isMobile && processed > 0) {
-      mobileProcessingCount++;
-    }
-    
-    return processed;
-  }
-  
-  // Função para configurar iframes existentes
-  function configureExistingIframes() {
+  // Função para configurar iframes criados pelo Instagram
+  function configureInstagramIframes() {
     document.querySelectorAll('.instagram-media iframe, .video-wrapper iframe, .card-video iframe, .video-doutor iframe, .video-consultorio iframe').forEach(iframe => {
       if (iframe.src && iframe.src.includes('instagram.com')) {
-        // Remover sandbox se existir
-        if (iframe.hasAttribute('sandbox')) {
-          iframe.removeAttribute('sandbox');
-        }
-        
-        // Garantir URL de embed
-        if (iframe.src.includes('/p/') && !iframe.src.includes('/embed/')) {
-          iframe.src = iframe.src.replace('/p/', '/embed/');
-        }
-        
-        // Adicionar atributos necessários
+        // Adicionar atributos necessários para reprodução
         iframe.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture; encrypted-media; accelerometer; gyroscope; camera; microphone');
         iframe.setAttribute('allowfullscreen', 'true');
         iframe.setAttribute('webkitallowfullscreen', 'true');
@@ -598,29 +415,13 @@ window.addEventListener('load', () => {
         iframe.setAttribute('scrolling', 'no');
         iframe.setAttribute('playsinline', 'true');
         
-        // Garantir visibilidade (especialmente no mobile)
-        iframe.style.setProperty('display', 'block', 'important');
-        iframe.style.setProperty('visibility', 'visible', 'important');
-        iframe.style.setProperty('opacity', '1', 'important');
-        iframe.style.setProperty('width', '100%', 'important');
-        iframe.style.setProperty('pointer-events', 'auto', 'important');
-        iframe.style.setProperty('touch-action', 'manipulation', 'important');
-        
-        // Garantir que o blockquote pai também seja visível
-        const blockquote = iframe.closest('.instagram-media');
-        if (blockquote) {
-          blockquote.style.setProperty('display', 'block', 'important');
-          blockquote.style.setProperty('visibility', 'visible', 'important');
-          blockquote.style.setProperty('opacity', '1', 'important');
-        }
-        
-        // Garantir que o container também seja visível
-        const container = iframe.closest('.video-wrapper, .card-video, .video-doutor, .video-consultorio');
-        if (container) {
-          container.style.setProperty('display', 'block', 'important');
-          container.style.setProperty('visibility', 'visible', 'important');
-          container.style.setProperty('opacity', '1', 'important');
-        }
+        // Garantir visibilidade
+        iframe.style.display = 'block';
+        iframe.style.visibility = 'visible';
+        iframe.style.opacity = '1';
+        iframe.style.width = '100%';
+        iframe.style.pointerEvents = 'auto';
+        iframe.style.touchAction = 'manipulation';
       }
     });
   }
@@ -630,7 +431,9 @@ window.addEventListener('load', () => {
     if (window.instgrm && window.instgrm.Embeds) {
       try {
         window.instgrm.Embeds.process();
-        setTimeout(configureExistingIframes, 500);
+        // Configurar iframes após processamento
+        setTimeout(configureInstagramIframes, 500);
+        setTimeout(configureInstagramIframes, 1500);
       } catch (e) {
         console.log('Erro ao processar embeds:', e);
       }
@@ -659,173 +462,66 @@ window.addEventListener('load', () => {
     document.body.appendChild(script);
   }
   
-  // No mobile: criar iframes diretamente
-  if (isMobile) {
-    // Função para inicializar no mobile
-    function initMobileEmbeds() {
-      processAllBlockquotes();
-      configureExistingIframes();
-    }
-    
-    // Processar imediatamente
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', function() {
-        initMobileEmbeds();
-      });
-    } else {
-      initMobileEmbeds();
-    }
-    
-    // Processar após delays múltiplos para garantir
-    setTimeout(initMobileEmbeds, 100);
-    setTimeout(initMobileEmbeds, 500);
-    setTimeout(initMobileEmbeds, 1000);
-    setTimeout(initMobileEmbeds, 1500);
-    setTimeout(initMobileEmbeds, 3000);
-    setTimeout(initMobileEmbeds, 5000);
-    
-    // Observer para novos blockquotes
-    if ('IntersectionObserver' in window) {
-      const mobileObserver = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-          if (entry.isIntersecting) {
-            const blockquote = entry.target;
-            if (blockquote.classList.contains('instagram-media') && !blockquote.querySelector('iframe')) {
-              replaceBlockquoteWithIframe(blockquote);
-              configureExistingIframes();
-            }
-          }
-        });
-      }, { threshold: 0.1, rootMargin: '200px' });
-      
-      setTimeout(function() {
-        document.querySelectorAll('.instagram-media[data-instgrm-permalink]').forEach(function(el) {
-          mobileObserver.observe(el);
-        });
-      }, 500);
-    }
-    
-    // Monitorar continuamente (mais agressivo no mobile)
-    processingInterval = setInterval(function() {
-      const processed = processAllBlockquotes();
-      configureExistingIframes();
-      
-      // Se processou algo, continuar monitorando
-      if (processed === 0 && mobileProcessingCount > 3) {
-        // Se já processou várias vezes e não há mais nada, reduzir frequência
-        clearInterval(processingInterval);
-        processingInterval = setInterval(function() {
-          processAllBlockquotes();
-          configureExistingIframes();
-        }, 5000);
-      }
-    }, 1000);
-    
-    // Parar após 60 segundos
-    setTimeout(function() {
-      if (processingInterval) clearInterval(processingInterval);
-    }, 60000);
-    
-    // Também processar quando a página ficar visível
-    document.addEventListener('visibilitychange', function() {
-      if (!document.hidden) {
-        setTimeout(initMobileEmbeds, 500);
-      }
+  // Carregar script do Instagram (funciona tanto no mobile quanto desktop)
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(loadInstagramScript, 200);
     });
   } else {
-    // Desktop: usar script oficial
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', function() {
-        setTimeout(loadInstagramScript, 200);
-      });
-    } else {
-      setTimeout(loadInstagramScript, 200);
-    }
-    
-    window.addEventListener('load', function() {
-      setTimeout(function() {
-        if (!window.instgrm) {
-          loadInstagramScript();
-        } else {
-          processEmbeds();
-        }
-      }, 800);
-    });
-    
-    // Observer para desktop
-    if ('IntersectionObserver' in window) {
-      const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-          if (entry.isIntersecting) {
-            setTimeout(processEmbeds, 200);
-          }
-        });
-      }, { threshold: 0.1, rootMargin: '50px' });
-      
-      setTimeout(function() {
-        document.querySelectorAll('.instagram-media').forEach(function(el) {
-          observer.observe(el);
-        });
-      }, 1500);
-    }
-    
-    // Processar periodicamente
-    processingInterval = setInterval(function() {
-      const unprocessed = Array.from(document.querySelectorAll('.instagram-media')).filter(function(el) {
-        return !el.querySelector('iframe');
-      });
-      if (unprocessed.length > 0 && window.instgrm) {
+    setTimeout(loadInstagramScript, 200);
+  }
+  
+  window.addEventListener('load', function() {
+    setTimeout(function() {
+      if (!window.instgrm) {
+        loadInstagramScript();
+      } else {
         processEmbeds();
-      } else if (unprocessed.length === 0) {
-        clearInterval(processingInterval);
       }
-    }, 2000);
+    }, 800);
+  });
+  
+  // Observer para processar quando elementos ficarem visíveis
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          setTimeout(processEmbeds, 200);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '100px' });
     
     setTimeout(function() {
-      if (processingInterval) clearInterval(processingInterval);
-    }, 30000);
+      document.querySelectorAll('.instagram-media').forEach(function(el) {
+        observer.observe(el);
+      });
+    }, 1000);
   }
   
-  // Prevenir redirecionamentos indesejados
-  function preventRedirects() {
-    // Interceptar cliques em links do Instagram dentro de containers de vídeo
-    document.addEventListener('click', function(e) {
-      const link = e.target.closest('a[href*="instagram.com"]');
-      if (link && (link.closest('.video-wrapper.instagram-embed') || link.closest('.video-card') || link.closest('.card-video'))) {
-        if (!link.href.includes('/embed/') && !link.href.includes('instagram.com/embed')) {
-          e.preventDefault();
-          e.stopPropagation();
-          e.stopImmediatePropagation();
-          return false;
-        }
-      }
-    }, true);
-    
-    // Interceptar toques no mobile
-    document.addEventListener('touchstart', function(e) {
-      const link = e.target.closest('a[href*="instagram.com"]');
-      if (link && (link.closest('.video-wrapper.instagram-embed') || link.closest('.video-card') || link.closest('.card-video'))) {
-        if (!link.href.includes('/embed/') && !link.href.includes('instagram.com/embed')) {
-          e.preventDefault();
-          e.stopPropagation();
-          e.stopImmediatePropagation();
-          return false;
-        }
-      }
-    }, true);
-  }
+  // Processar periodicamente para garantir que todos sejam processados
+  processingInterval = setInterval(function() {
+    const unprocessed = Array.from(document.querySelectorAll('.instagram-media')).filter(function(el) {
+      return !el.querySelector('iframe');
+    });
+    if (unprocessed.length > 0 && window.instgrm) {
+      processEmbeds();
+    } else if (unprocessed.length === 0) {
+      clearInterval(processingInterval);
+    }
+  }, 2000);
   
-  // Executar prevenção de redirecionamentos
-  preventRedirects();
+  setTimeout(function() {
+    if (processingInterval) clearInterval(processingInterval);
+  }, 30000);
   
-  // Monitorar quando novos iframes são adicionados
+  // Monitorar quando novos iframes são adicionados pelo Instagram
   const iframeObserver = new MutationObserver(function(mutations) {
     mutations.forEach(function(mutation) {
       mutation.addedNodes.forEach(function(node) {
         if (node.tagName === 'IFRAME' || (node.querySelector && node.querySelector('iframe'))) {
           const iframe = node.tagName === 'IFRAME' ? node : node.querySelector('iframe');
           if (iframe && iframe.src && iframe.src.includes('instagram.com')) {
-            configureExistingIframes();
+            setTimeout(configureInstagramIframes, 100);
           }
         }
       });
@@ -845,12 +541,8 @@ window.addEventListener('load', () => {
   // Processar quando a página ficar visível
   document.addEventListener('visibilitychange', function() {
     if (!document.hidden) {
-      if (isMobile) {
-        setTimeout(processAllBlockquotes, 500);
-      } else {
-        setTimeout(processEmbeds, 500);
-        setTimeout(configureExistingIframes, 1000);
-      }
+      setTimeout(processEmbeds, 500);
+      setTimeout(configureInstagramIframes, 1000);
     }
   });
 })();
