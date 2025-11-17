@@ -856,21 +856,33 @@
           }
         });
         
-        // Configurar iframes
-        document.querySelectorAll('.instagram-media iframe, .video-wrapper iframe, .card-video iframe').forEach(function(iframe) {
-          if (iframe && iframe.src && iframe.src.includes('instagram.com')) {
-            // Adicionar atributos para garantir execução inline no mobile
-            iframe.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture; encrypted-media; accelerometer; gyroscope');
-            iframe.setAttribute('allowfullscreen', 'true');
-            iframe.setAttribute('webkitallowfullscreen', 'true');
-            iframe.setAttribute('mozallowfullscreen', 'true');
-            iframe.setAttribute('scrolling', 'no');
-            
-            // Prevenir que links dentro do iframe redirecionem
-            iframe.style.pointerEvents = 'auto';
-            iframe.style.touchAction = 'manipulation';
-          }
-        });
+        // Configurar TODOS os iframes do Instagram no site
+        function configureAllInstagramIframes() {
+          document.querySelectorAll('.instagram-media iframe, .video-wrapper iframe, .card-video iframe, .video-doutor iframe, .video-consultorio iframe').forEach(function(iframe) {
+            if (iframe && iframe.src && iframe.src.includes('instagram.com')) {
+              // Adicionar atributos para garantir execução inline no mobile
+              iframe.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture; encrypted-media; accelerometer; gyroscope');
+              iframe.setAttribute('allowfullscreen', 'true');
+              iframe.setAttribute('webkitallowfullscreen', 'true');
+              iframe.setAttribute('mozallowfullscreen', 'true');
+              iframe.setAttribute('scrolling', 'no');
+              
+              // Prevenir que links dentro do iframe redirecionem
+              iframe.style.pointerEvents = 'auto';
+              iframe.style.touchAction = 'manipulation';
+              
+              // Garantir que o iframe seja interativo no mobile
+              iframe.style.width = '100%';
+              iframe.style.maxWidth = '100%';
+            }
+          });
+        }
+        
+        // Executar imediatamente e periodicamente
+        configureAllInstagramIframes();
+        setTimeout(configureAllInstagramIframes, 2000);
+        setTimeout(configureAllInstagramIframes, 5000);
+        setTimeout(configureAllInstagramIframes, 8000);
         
         // Remover ou desabilitar links do Instagram que causam redirecionamento
         function disableInstagramLinks() {
