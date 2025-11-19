@@ -58,6 +58,25 @@ body > * {
   }
 }
 
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+    box-shadow:
+      0 8px 25px rgba(0, 0, 0, 0.3),
+      0 0 20px rgba(255, 255, 255, 0.2),
+      0 0 0 0 rgba(136, 6, 6, 0.7);
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.95;
+    box-shadow:
+      0 8px 25px rgba(0, 0, 0, 0.4),
+      0 0 35px rgba(255, 255, 255, 0.5),
+      0 0 0 15px rgba(136, 6, 6, 0.4);
+    transform: scale(1.02);
+  }
+}
+
 section {
   animation: fadeInUp 0.6s ease-out;
 }
@@ -267,12 +286,25 @@ header .logo {
   transform: scale(1.05);
 }
 
-.header-features {
+.header-features-container {
   display: flex;
-  gap: 20px;
-  justify-content: center;
+  align-items: flex-start;
+  gap: 30px;
   margin: 25px 0;
   flex-wrap: wrap;
+}
+
+.header-features {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+  flex: 0 0 auto;
+}
+
+.header-features-container .btn-agendar {
+  align-self: flex-start;
+  margin-top: 0;
 }
 
 .feature-item {
@@ -327,7 +359,6 @@ header .logo {
   font-weight: 700;
   border-radius: 50px;
   cursor: pointer;
-  margin-top: 20px;
   transition: all 0.4s ease;
   box-shadow: 
     0 8px 25px rgba(0, 0, 0, 0.3),
@@ -339,6 +370,7 @@ header .logo {
   letter-spacing: 1px;
   position: relative;
   overflow: hidden;
+  animation: blink 2s ease-in-out infinite;
 }
 
 .btn-agendar::before {
@@ -1595,18 +1627,24 @@ footer::after {
     gap: 8px;
   }
 
-  .header-features {
+  .header-features-container {
     flex-direction: column;
-    gap: 10px;
+    align-items: center;
+    gap: 20px;
   }
 
-  .btn-agendar {
-    padding: 14px 30px;
-    font-size: 0.95em;
-    gap: 8px;
+  .header-features {
+    align-items: center;
+    width: 100%;
+  }
+
+  .header-features-container .btn-agendar {
     width: 100%;
     max-width: 300px;
     justify-content: center;
+    padding: 14px 30px;
+    font-size: 0.95em;
+    gap: 8px;
   }
 
   .btn-agendar i {
@@ -3207,33 +3245,48 @@ footer::after {
 }
 
 .social-links-header a:hover { 
-  background-color: rgba(255, 255, 255, 0.25);
   transform: translateY(-3px) scale(1.1);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-.social-links-header a.whatsapp:hover { 
+.social-links-header a.whatsapp {
   background-color: #25d366;
   border-color: #25d366;
-  color: #ffffff;
+}
+
+.social-links-header a.whatsapp:hover { 
+  background-color: #128c7e;
+  border-color: #128c7e;
+}
+
+.social-links-header a.instagram {
+  background-color: #E4405F;
+  border-color: #E4405F;
 }
 
 .social-links-header a.instagram:hover { 
-  background-color: #e4405f;
-  border-color: #e4405f;
-  color: #ffffff;
+  background-color: #C13584;
+  border-color: #C13584;
+}
+
+.social-links-header a.linktree {
+  background-color: #39E09B;
+  border-color: #39E09B;
 }
 
 .social-links-header a.linktree:hover { 
-  background-color: #43e55c;
-  border-color: #43e55c;
-  color: #ffffff;
+  background-color: #2BC47A;
+  border-color: #2BC47A;
+}
+
+.social-links-header a.tiktok {
+  background-color: #000000;
+  border-color: #000000;
 }
 
 .social-links-header a.tiktok:hover { 
-  background-color: #000000;
-  border-color: #000000;
-  color: #ffffff;
+  background-color: #333333;
+  border-color: #333333;
 }
 
 
@@ -3627,39 +3680,85 @@ header ~ section:first-of-type {
 .social-links a:hover {
   transform: translateY(-3px) scale(1.1);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  background-color: rgba(255, 255, 255, 0.25);
+}
+
+.social-links a.whatsapp {
+  background-color: #25d366;
+  border-color: #25d366;
 }
 
 .social-links a.whatsapp:hover {
-  background-color: #25d366;
-  border-color: #25d366;
-  color: #ffffff;
+  background-color: #128c7e;
+  border-color: #128c7e;
+}
+
+.social-links a.instagram {
+  background-color: #E4405F;
+  border-color: #E4405F;
 }
 
 .social-links a.instagram:hover {
-  background-color: #e4405f;
-  border-color: #e4405f;
-  color: #ffffff;
+  background-color: #C13584;
+  border-color: #C13584;
+}
+
+.social-links a.linktree {
+  background-color: #39E09B;
+  border-color: #39E09B;
 }
 
 .social-links a.linktree:hover {
-  background-color: #43e55c;
-  border-color: #43e55c;
-  color: #ffffff;
+  background-color: #2BC47A;
+  border-color: #2BC47A;
+}
+
+.social-links a.tiktok {
+  background-color: #000000;
+  border-color: #000000;
 }
 
 .social-links a.tiktok:hover {
-  background-color: #000000;
-  border-color: #000000;
-  color: #ffffff;
+  background-color: #333333;
+  border-color: #333333;
 }
 
 /* Redes sociais no footer - estilo específico */
-footer .social-links a {
-  background-color: rgba(136, 6, 6, 0.3);
-  border-color: rgba(136, 6, 6, 0.5);
+footer .social-links a.whatsapp {
+  background-color: #25d366;
+  border-color: #25d366;
 }
 
-footer .social-links a:hover {
-  background-color: rgba(255, 255, 255, 0.25);
+footer .social-links a.whatsapp:hover {
+  background-color: #128c7e;
+  border-color: #128c7e;
+}
+
+footer .social-links a.instagram {
+  background-color: #E4405F;
+  border-color: #E4405F;
+}
+
+footer .social-links a.instagram:hover {
+  background-color: #C13584;
+  border-color: #C13584;
+}
+
+footer .social-links a.linktree {
+  background-color: #39E09B;
+  border-color: #39E09B;
+}
+
+footer .social-links a.linktree:hover {
+  background-color: #2BC47A;
+  border-color: #2BC47A;
+}
+
+footer .social-links a.tiktok {
+  background-color: #000000;
+  border-color: #000000;
+}
+
+footer .social-links a.tiktok:hover {
+  background-color: #333333;
+  border-color: #333333;
 }
