@@ -51,7 +51,7 @@
   <meta name="theme-color" content="#880606">
   <meta name="msapplication-TileColor" content="#880606">
   <meta name="msapplication-TileImage" content="imagens/favicon.png">
-  <!-- Preload da imagem LCP para melhor performance -->
+  <!-- Preload da imagem LCP para melhor performance - crítico para LCP -->
   <link rel="preload" as="image" href="imagens/doutor2.jpg" fetchpriority="high">
   
   <!-- Preconnect para recursos externos -->
@@ -65,12 +65,36 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"></noscript>
   
-  <!-- Font Awesome carregado de forma assíncrona -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
-  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
-  
-  <!-- CSS principal -->
+  <!-- CSS principal - crítico, carrega normalmente -->
   <link rel="stylesheet" href="css/style.css">
+  
+  <!-- Font Awesome - carregado de forma assíncrona e adiado no mobile -->
+  <script>
+    (function() {
+      const isMobile = window.innerWidth <= 768;
+      const loadFontAwesome = function() {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
+        link.media = 'print';
+        link.onload = function() { this.media = 'all'; };
+        document.head.appendChild(link);
+      };
+      
+      if (isMobile) {
+        // No mobile, adiar Font Awesome até após o primeiro paint
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(loadFontAwesome, { timeout: 2000 });
+        } else {
+          setTimeout(loadFontAwesome, 1500);
+        }
+      } else {
+        // Desktop: carregar normalmente mas assíncrono
+        loadFontAwesome();
+      }
+    })();
+  </script>
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
 </head>
 
 <body>

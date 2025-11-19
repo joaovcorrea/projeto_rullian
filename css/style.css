@@ -136,6 +136,21 @@ section {
   .card, .card-servico, .card-mais, .card-avaliacao {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
+  
+  /* Otimizar renderização - usar contain para isolar elementos */
+  .carousel-container, .card, .card-servico {
+    contain: layout style paint;
+  }
+  
+  /* Reduzir transições no mobile */
+  * {
+    transition-duration: 0.2s !important;
+  }
+  
+  /* Desabilitar hover effects no mobile */
+  .card:hover, .card-servico:hover, .card-mais:hover {
+    transform: none;
+  }
 }
 
 header {

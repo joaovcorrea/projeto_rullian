@@ -293,15 +293,28 @@ class Carousel {
     // Desabilitar autoplay no mobile para melhor performance
     const isMobile = window.innerWidth <= 768;
     if (!isMobile && this.totalSlides > 1) {
-      this.autoplayInterval = setInterval(() => {
-        this.nextSlide();
-      }, 5000);
+      // Usar requestAnimationFrame para melhor performance
+      let lastTime = performance.now();
+      const autoplayFrame = (currentTime) => {
+        if (currentTime - lastTime >= 5000) {
+          this.nextSlide();
+          lastTime = currentTime;
+        }
+        if (!this.autoplayInterval) {
+          this.autoplayInterval = requestAnimationFrame(autoplayFrame);
+        }
+      };
+      this.autoplayInterval = requestAnimationFrame(autoplayFrame);
     }
   }
-
+  
   stopAutoplay() {
     if (this.autoplayInterval) {
-      clearInterval(this.autoplayInterval);
+      if (typeof this.autoplayInterval === 'number') {
+        cancelAnimationFrame(this.autoplayInterval);
+      } else {
+        clearInterval(this.autoplayInterval);
+      }
       this.autoplayInterval = null;
     }
   }
@@ -367,11 +380,20 @@ function initScrollAnimations() {
   
   // No mobile, adicionar classe imediatamente sem observer para melhor performance
   if (isMobile) {
-    requestAnimationFrame(() => {
-      document.querySelectorAll('section, .card, .card-mais, .dif-item, .video-card').forEach(el => {
-        el.classList.add('animate-in');
+    // Usar requestIdleCallback para não bloquear renderização
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(() => {
+        document.querySelectorAll('section, .card, .card-mais, .dif-item, .video-card').forEach(el => {
+          el.classList.add('animate-in');
+        });
+      }, { timeout: 1000 });
+    } else {
+      requestAnimationFrame(() => {
+        document.querySelectorAll('section, .card, .card-mais, .dif-item, .video-card').forEach(el => {
+          el.classList.add('animate-in');
+        });
       });
-    });
+    }
     return;
   }
   
@@ -391,15 +413,26 @@ function initScrollAnimations() {
     });
   }, observerOptions);
 
-  requestAnimationFrame(() => {
-    document.querySelectorAll('section').forEach(section => {
-      observer.observe(section);
+  // Usar requestIdleCallback para não bloquear thread principal
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(() => {
+      document.querySelectorAll('section').forEach(section => {
+        observer.observe(section);
+      });
+      document.querySelectorAll('.card, .card-mais, .dif-item, .video-card').forEach(el => {
+        observer.observe(el);
+      });
     });
-
-    document.querySelectorAll('.card, .card-mais, .dif-item, .video-card').forEach(el => {
-      observer.observe(el);
+  } else {
+    requestAnimationFrame(() => {
+      document.querySelectorAll('section').forEach(section => {
+        observer.observe(section);
+      });
+      document.querySelectorAll('.card, .card-mais, .dif-item, .video-card').forEach(el => {
+        observer.observe(el);
+      });
     });
-  });
+  }
 }
 
 if (document.readyState === 'loading') {
@@ -417,11 +450,16 @@ document.addEventListener('keydown', (e) => {
 });
 
 // ===== SCROLL TO TOP =====
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    window.scrollTo(0, 0);
-  }, 10);
-});
+// Otimizado: apenas no mobile e apenas se necessário
+if (window.innerWidth <= 768) {
+  window.addEventListener('load', () => {
+    requestAnimationFrame(() => {
+      if (window.scrollY > 0) {
+        window.scrollTo(0, 0);
+      }
+    });
+  });
+}
 
 // ===== INSTAGRAM EMBEDS HANDLER =====
 (function() {
@@ -489,27 +527,57 @@ window.addEventListener('load', () => {
     document.body.appendChild(script);
   }
   
-  // Carregar script do Instagram (funciona tanto no mobile quanto desktop)
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function() {
-      setTimeout(loadInstagramScript, 200);
-    });
-  } else {
-    setTimeout(loadInstagramScript, 200);
-  }
-  
-  window.addEventListener('load', function() {
-    setTimeout(function() {
-      if (!window.instgrm) {
-        loadInstagramScript();
-      } else {
-        processEmbeds();
-      }
-    }, 800);
-  });
-  
-  // Detectar mobile para otimizações
+  // Carregar script do Instagram - otimizado para mobile
   const isMobile = window.innerWidth <= 768;
+  
+  if (isMobile) {
+    // No mobile, adiar carregamento do Instagram até após interação ou scroll
+    let instagramLoaded = false;
+    const loadOnInteraction = function() {
+      if (!instagramLoaded) {
+        instagramLoaded = true;
+        // Usar requestIdleCallback se disponível, senão setTimeout
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(loadInstagramScript, { timeout: 3000 });
+        } else {
+          setTimeout(loadInstagramScript, 2000);
+        }
+        // Remover listeners após carregar
+        document.removeEventListener('scroll', loadOnInteraction, { passive: true });
+        document.removeEventListener('touchstart', loadOnInteraction, { passive: true });
+      }
+    };
+    
+    // Carregar após scroll ou toque (interação do usuário)
+    document.addEventListener('scroll', loadOnInteraction, { passive: true, once: true });
+    document.addEventListener('touchstart', loadOnInteraction, { passive: true, once: true });
+    
+    // Fallback: carregar após 5 segundos se não houver interação
+    setTimeout(function() {
+      if (!instagramLoaded) {
+        loadOnInteraction();
+      }
+    }, 5000);
+  } else {
+    // Desktop: carregar normalmente mas com delay
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(loadInstagramScript, 500);
+      });
+    } else {
+      setTimeout(loadInstagramScript, 500);
+    }
+    
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        if (!window.instgrm) {
+          loadInstagramScript();
+        } else {
+          processEmbeds();
+        }
+      }, 1000);
+    });
+  }
   
   // Observer para processar quando elementos ficarem visíveis
   if ('IntersectionObserver' in window) {
