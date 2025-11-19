@@ -290,9 +290,13 @@ class Carousel {
 
   startAutoplay() {
     this.stopAutoplay();
-    this.autoplayInterval = setInterval(() => {
-      this.nextSlide();
-    }, 5000);
+    // Desabilitar autoplay no mobile para melhor performance
+    const isMobile = window.innerWidth <= 768;
+    if (!isMobile && this.totalSlides > 1) {
+      this.autoplayInterval = setInterval(() => {
+        this.nextSlide();
+      }, 5000);
+    }
   }
 
   stopAutoplay() {
@@ -321,14 +325,20 @@ function initWhatsAppFloat() {
   const whatsappFloat = document.getElementById('whatsappFloat');
   if (!whatsappFloat) return;
 
-  setInterval(() => {
-    whatsappFloat.style.animation = 'none';
-    setTimeout(() => {
-      whatsappFloat.style.animation = 'pulse 2s ease-in-out';
-    }, 10);
-  }, 4000);
-
+  const isMobile = window.innerWidth <= 768;
+  
+  // No mobile, apenas adicionar classe visible sem animação periódica
   whatsappFloat.classList.add('visible');
+  
+  // Apenas no desktop, manter animação periódica
+  if (!isMobile) {
+    setInterval(() => {
+      whatsappFloat.style.animation = 'none';
+      setTimeout(() => {
+        whatsappFloat.style.animation = 'pulse 2s ease-in-out';
+      }, 10);
+    }, 4000);
+  }
 }
 
 if (document.readyState === 'loading') {
@@ -353,6 +363,19 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 // ===== SCROLL ANIMATIONS =====
 function initScrollAnimations() {
+  const isMobile = window.innerWidth <= 768;
+  
+  // No mobile, adicionar classe imediatamente sem observer para melhor performance
+  if (isMobile) {
+    requestAnimationFrame(() => {
+      document.querySelectorAll('section, .card, .card-mais, .dif-item, .video-card').forEach(el => {
+        el.classList.add('animate-in');
+      });
+    });
+    return;
+  }
+  
+  // Desktop: usar IntersectionObserver otimizado
   const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -50px 0px'
@@ -362,16 +385,20 @@ function initScrollAnimations() {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('animate-in');
+        // Desconectar após animar para melhor performance
+        observer.unobserve(entry.target);
       }
     });
   }, observerOptions);
 
-  document.querySelectorAll('section').forEach(section => {
-    observer.observe(section);
-  });
+  requestAnimationFrame(() => {
+    document.querySelectorAll('section').forEach(section => {
+      observer.observe(section);
+    });
 
-  document.querySelectorAll('.card, .card-mais, .dif-item, .video-card').forEach(el => {
-    observer.observe(el);
+    document.querySelectorAll('.card, .card-mais, .dif-item, .video-card').forEach(el => {
+      observer.observe(el);
+    });
   });
 }
 
@@ -481,24 +508,32 @@ window.addEventListener('load', () => {
     }, 800);
   });
   
+  // Detectar mobile para otimizações
+  const isMobile = window.innerWidth <= 768;
+  
   // Observer para processar quando elementos ficarem visíveis
   if ('IntersectionObserver' in window) {
+    const rootMargin = isMobile ? '50px' : '100px';
     const observer = new IntersectionObserver(function(entries) {
       entries.forEach(function(entry) {
         if (entry.isIntersecting) {
-          setTimeout(processEmbeds, 200);
+          setTimeout(processEmbeds, isMobile ? 300 : 200);
         }
       });
-    }, { threshold: 0.1, rootMargin: '100px' });
+    }, { threshold: 0.1, rootMargin: rootMargin });
     
     setTimeout(function() {
       document.querySelectorAll('.instagram-media').forEach(function(el) {
         observer.observe(el);
       });
-    }, 1000);
+    }, isMobile ? 1500 : 1000);
   }
   
   // Processar periodicamente para garantir que todos sejam processados
+  // No mobile, reduzir frequência para melhor performance
+  const intervalTime = isMobile ? 4000 : 2000;
+  const maxTime = isMobile ? 20000 : 30000;
+  
   processingInterval = setInterval(function() {
     const unprocessed = Array.from(document.querySelectorAll('.instagram-media')).filter(function(el) {
       return !el.querySelector('iframe');
@@ -508,35 +543,38 @@ window.addEventListener('load', () => {
     } else if (unprocessed.length === 0) {
       clearInterval(processingInterval);
     }
-  }, 2000);
+  }, intervalTime);
   
   setTimeout(function() {
     if (processingInterval) clearInterval(processingInterval);
-  }, 30000);
+  }, maxTime);
   
   // Monitorar quando novos iframes são adicionados pelo Instagram
-  const iframeObserver = new MutationObserver(function(mutations) {
-    mutations.forEach(function(mutation) {
-      mutation.addedNodes.forEach(function(node) {
-        if (node.tagName === 'IFRAME' || (node.querySelector && node.querySelector('iframe'))) {
-          const iframe = node.tagName === 'IFRAME' ? node : node.querySelector('iframe');
-          if (iframe && iframe.src && iframe.src.includes('instagram.com')) {
-            setTimeout(configureInstagramIframes, 100);
+  // No mobile, desabilitar MutationObserver para melhor performance
+  if (!isMobile && 'MutationObserver' in window) {
+    const iframeObserver = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.tagName === 'IFRAME' || (node.querySelector && node.querySelector('iframe'))) {
+            const iframe = node.tagName === 'IFRAME' ? node : node.querySelector('iframe');
+            if (iframe && iframe.src && iframe.src.includes('instagram.com')) {
+              setTimeout(configureInstagramIframes, 100);
+            }
           }
-        }
+        });
       });
     });
-  });
-  
-  // Observar containers de vídeo
-  setTimeout(function() {
-    document.querySelectorAll('.video-wrapper.instagram-embed, .card-video, .instagram-media, .video-doutor, .video-consultorio').forEach(function(container) {
-      iframeObserver.observe(container, {
-        childList: true,
-        subtree: true
+    
+    // Observar containers de vídeo
+    setTimeout(function() {
+      document.querySelectorAll('.video-wrapper.instagram-embed, .card-video, .instagram-media, .video-doutor, .video-consultorio').forEach(function(container) {
+        iframeObserver.observe(container, {
+          childList: true,
+          subtree: false // Otimização: não observar subtree no mobile
+        });
       });
-    });
-  }, 1000);
+    }, 1000);
+  }
   
   // Processar quando a página ficar visível
   document.addEventListener('visibilitychange', function() {
