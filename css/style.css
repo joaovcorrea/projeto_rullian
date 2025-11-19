@@ -29,6 +29,24 @@ body {
   body::before {
     display: none;
   }
+  
+  /* Otimizações de performance para mobile */
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Reduzir reflows forçados */
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+  
+  /* Otimizar renderização de imagens */
+  img[loading="lazy"] {
+    content-visibility: auto;
+  }
 }
 
 p {
@@ -101,6 +119,22 @@ section {
 @media (max-width: 768px) {
   section {
     animation: none;
+  }
+  
+  /* Desabilitar animações pesadas no mobile */
+  .header-background {
+    animation: none;
+    background-size: 100% 100%;
+  }
+  
+  /* Otimizar carrosséis no mobile */
+  .carousel-wrapper {
+    will-change: transform;
+  }
+  
+  /* Reduzir complexidade de sombras no mobile */
+  .card, .card-servico, .card-mais, .card-avaliacao {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 }
 

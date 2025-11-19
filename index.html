@@ -51,10 +51,25 @@
   <meta name="theme-color" content="#880606">
   <meta name="msapplication-TileColor" content="#880606">
   <meta name="msapplication-TileImage" content="imagens/favicon.png">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Preload da imagem LCP para melhor performance -->
+  <link rel="preload" as="image" href="imagens/doutor2.jpg" fetchpriority="high">
+  
+  <!-- Preconnect para recursos externos -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="preconnect" href="https://www.instagram.com" crossorigin>
+  <link rel="dns-prefetch" href="https://www.instagram.com">
+  
+  <!-- Google Fonts com font-display: swap -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"></noscript>
+  
+  <!-- Font Awesome carregado de forma assíncrona -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+  
+  <!-- CSS principal -->
   <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -73,7 +88,7 @@
     <div class="foto-doutor-header">
       <div class="foto-wrapper">
         <div class="foto-glow"></div>
-      <img src="imagens/doutor2.jpg" alt="Dr. Rullian Pinheiro - Cirurgião-Dentista em Curitiba, Bigorrilho">
+      <img src="imagens/doutor2.jpg" alt="Dr. Rullian Pinheiro - Cirurgião-Dentista em Curitiba, Bigorrilho" width="400" height="400" fetchpriority="high" decoding="async">
       </div>
       <div class="social-links-header">
         <a href="https://wa.me/5541997484686" class="whatsapp" target="_blank" rel="noopener" title="WhatsApp">
@@ -95,7 +110,7 @@
     <div class="info-header">
       <div class="logo-wrapper">
         <div class="logo-glow"></div>
-      <img src="imagens/rp.jpg" alt="Logo Dr. Rullian Pinheiro" class="logo">
+      <img src="imagens/rp.jpg" alt="Logo Dr. Rullian Pinheiro" class="logo" width="150" height="150" loading="eager" decoding="async">
       </div>
       <h1 class="header-title">
         <span class="title-main">Dr. Rullian Pinheiro</span>
@@ -166,7 +181,7 @@
         </button>
       </div>
       <div class="apresentacao-imagem">
-        <img src="imagens/doutor2.jpg" alt="Dr. Rullian Pinheiro - Cirurgião-Dentista em Curitiba, Bigorrilho" loading="lazy">
+        <img src="imagens/doutor2.jpg" alt="Dr. Rullian Pinheiro - Cirurgião-Dentista em Curitiba, Bigorrilho" loading="lazy" width="600" height="600" decoding="async">
       </div>
     </div>
   </section>
@@ -196,10 +211,10 @@
         </button>
         <div class="carousel-wrapper">
           <div class="carousel-slide">
-        <img src="imagens/doutor1.jpg" alt="Dr. Rullian Pinheiro realizando atendimento odontológico no consultório em Curitiba">
+        <img src="imagens/doutor1.jpg" alt="Dr. Rullian Pinheiro realizando atendimento odontológico no consultório em Curitiba" loading="lazy" width="600" height="600" decoding="async">
           </div>
           <div class="carousel-slide">
-            <img src="imagens/doutor2.jpg" alt="Dr. Rullian Pinheiro - Cirurgião-Dentista em Curitiba, Bigorrilho">
+            <img src="imagens/doutor2.jpg" alt="Dr. Rullian Pinheiro - Cirurgião-Dentista em Curitiba, Bigorrilho" loading="lazy" width="600" height="600" decoding="async">
           </div>
         </div>
         <button class="carousel-btn carousel-next" aria-label="Próxima imagem">
@@ -279,16 +294,16 @@
       </button>
       <div class="carousel-wrapper">
         <div class="carousel-slide">
-      <img src="imagens/consultorio1.jpg" alt="Recepção moderna do consultório odontológico do Dr. Rullian Pinheiro em Bigorrilho, Curitiba">
+      <img src="imagens/consultorio1.jpg" alt="Recepção moderna do consultório odontológico do Dr. Rullian Pinheiro em Bigorrilho, Curitiba" loading="lazy" width="800" height="600" decoding="async">
         </div>
         <div class="carousel-slide">
-      <img src="imagens/consultorio2.jpg" alt="Sala de atendimento odontológico moderna com equipamentos de última geração em Curitiba">
+      <img src="imagens/consultorio2.jpg" alt="Sala de atendimento odontológico moderna com equipamentos de última geração em Curitiba" loading="lazy" width="800" height="600" decoding="async">
         </div>
         <div class="carousel-slide">
-      <img src="imagens/consultorio3.jpg" alt="Equipamentos odontológicos modernos e tecnologia de ponta no consultório do Dr. Rullian Pinheiro">
+      <img src="imagens/consultorio3.jpg" alt="Equipamentos odontológicos modernos e tecnologia de ponta no consultório do Dr. Rullian Pinheiro" loading="lazy" width="800" height="600" decoding="async">
         </div>
         <div class="carousel-slide">
-      <img src="imagens/consultorio4.jpg" alt="Vista geral do consultório odontológico do Dr. Rullian Pinheiro em Bigorrilho, Curitiba">
+      <img src="imagens/consultorio4.jpg" alt="Vista geral do consultório odontológico do Dr. Rullian Pinheiro em Bigorrilho, Curitiba" loading="lazy" width="800" height="600" decoding="async">
         </div>
       </div>
       <button class="carousel-btn carousel-next" aria-label="Próxima imagem">
@@ -308,7 +323,7 @@
     <div class="cards-servicos">
       <div class="card card-servico">
         <div class="card-icon-wrapper">
-        <img src="imagens/endodontia.png" alt="Tratamento de canal e endodontia em Curitiba - Dr. Rullian Pinheiro">
+        <img src="imagens/endodontia.png" alt="Tratamento de canal e endodontia em Curitiba - Dr. Rullian Pinheiro" loading="lazy" width="200" height="200" decoding="async">
           <div class="card-icon-glow"></div>
         </div>
         <h4>Endodontia</h4>
@@ -337,7 +352,7 @@
       </div>
       <div class="card card-servico">
         <div class="card-icon-wrapper">
-        <img src="imagens/protese.png" alt="Próteses dentárias e reabilitação oral em Curitiba - Dr. Rullian Pinheiro">
+        <img src="imagens/protese.png" alt="Próteses dentárias e reabilitação oral em Curitiba - Dr. Rullian Pinheiro" loading="lazy" width="200" height="200" decoding="async">
           <div class="card-icon-glow"></div>
         </div>
         <h4>Prótese Dentária</h4>
@@ -366,7 +381,7 @@
       </div>
       <div class="card card-servico">
         <div class="card-icon-wrapper">
-        <img src="imagens/cirurgia.png" alt="Cirurgia odontológica e extrações em Curitiba - Dr. Rullian Pinheiro">
+        <img src="imagens/cirurgia.png" alt="Cirurgia odontológica e extrações em Curitiba - Dr. Rullian Pinheiro" loading="lazy" width="200" height="200" decoding="async">
           <div class="card-icon-glow"></div>
         </div>
         <h4>Cirurgia Odontológica</h4>
@@ -395,7 +410,7 @@
       </div>
       <div class="card card-servico">
         <div class="card-icon-wrapper">
-        <img src="imagens/protese.jpg" alt="Implantes dentários e reabilitação oral em Curitiba - Dr. Rullian Pinheiro">
+        <img src="imagens/protese.jpg" alt="Implantes dentários e reabilitação oral em Curitiba - Dr. Rullian Pinheiro" loading="lazy" width="200" height="200" decoding="async">
           <div class="card-icon-glow"></div>
         </div>
         <h4>Implantes Dentários</h4>
@@ -433,17 +448,17 @@
     </p>
     <div class="cards-mais">
       <div class="card-mais">
-        <img src="imagens/limpeza.jpg" alt="Limpeza dentária profissional e profilaxia em Curitiba - Dr. Rullian Pinheiro">
+        <img src="imagens/limpeza.jpg" alt="Limpeza dentária profissional e profilaxia em Curitiba - Dr. Rullian Pinheiro" loading="lazy" width="400" height="300" decoding="async">
         <h4>Limpeza Dentária</h4>
         <p>Remoção de placa bacteriana e tártaro para manter dentes e gengivas saudáveis, prevenindo inflamações e mau hálito.</p>
       </div>
       <div class="card-mais">
-        <img src="imagens/clareamento.jpg" alt="Clareamento dental e estética do sorriso em Curitiba - Dr. Rullian Pinheiro">
+        <img src="imagens/clareamento.jpg" alt="Clareamento dental e estética do sorriso em Curitiba - Dr. Rullian Pinheiro" loading="lazy" width="400" height="300" decoding="async">
         <h4>Clareamento Dentário</h4>
         <p>Técnica segura e eficaz que devolve o branco natural dos dentes, deixando seu sorriso mais iluminado e confiante.</p>
       </div>
       <div class="card-mais">
-        <img src="imagens/facetas.jpg" alt="Facetas dentárias e estética do sorriso em Curitiba - Dr. Rullian Pinheiro">
+        <img src="imagens/facetas.jpg" alt="Facetas dentárias e estética do sorriso em Curitiba - Dr. Rullian Pinheiro" loading="lazy" width="400" height="300" decoding="async">
         <h4>Facetas Dentárias</h4>
         <p>Lâminas ultrafinas aplicadas sobre os dentes para corrigir forma, cor e pequenas imperfeições de maneira natural.</p>
       </div>
@@ -531,32 +546,32 @@
     <div class="cards-avaliacoes">
       <div class="card-avaliacao">
         <div class="perfil-paciente">
-          <img src="imagens/paciente1.jpg" alt="Avaliação de paciente satisfeito com atendimento do Dr. Rullian Pinheiro em Curitiba">
+            <img src="imagens/paciente1.jpg" alt="Avaliação de paciente satisfeito com atendimento do Dr. Rullian Pinheiro em Curitiba" loading="lazy" width="80" height="80" decoding="async">
           <div>
             <h4>Mariana Souza</h4>
             <div class="estrelas">★★★★★</div>
           </div>
         </div>
         <p>
-          “Excelente profissional! Fui muito bem atendida, com explicações claras e cuidado em cada detalhe.
-          Recomendo de olhos fechados.”
+          "Excelente profissional! Fui muito bem atendida, com explicações claras e cuidado em cada detalhe.
+          Recomendo de olhos fechados."
         </p>
       </div>
       <div class="card-avaliacao">
         <div class="perfil-paciente">
-          <img src="imagens/paciente2.jpg" alt="Depoimento de paciente sobre tratamento odontológico com Dr. Rullian Pinheiro">
+          <img src="imagens/paciente2.jpg" alt="Depoimento de paciente sobre tratamento odontológico com Dr. Rullian Pinheiro" loading="lazy" width="80" height="80" decoding="async">
           <div>
             <h4>Lucas Andrade</h4>
             <div class="estrelas">★★★★★</div>
           </div>
         </div>
         <p>
-          “Atendimento impecável, ambiente limpo e moderno. O Dr. Rullian transmite muita confiança e profissionalismo.”
+          "Atendimento impecável, ambiente limpo e moderno. O Dr. Rullian transmite muita confiança e profissionalismo."
         </p>
       </div>
       <div class="card-avaliacao">
         <div class="perfil-paciente">
-          <img src="imagens/paciente3.jpg" alt="Avaliação positiva de paciente atendido pelo Dr. Rullian Pinheiro em Curitiba">
+          <img src="imagens/paciente3.jpg" alt="Avaliação positiva de paciente atendido pelo Dr. Rullian Pinheiro em Curitiba" loading="lazy" width="80" height="80" decoding="async">
           <div>
             <h4>Beatriz Lima</h4>
             <div class="estrelas">★★★★★</div>
@@ -579,7 +594,7 @@
         <!-- Informações do Doutor -->
         <div class="footer-col footer-info">
           <div class="footer-logo">
-            <img src="imagens/rp.jpg" alt="Logo Dr. Rullian Pinheiro" class="footer-logo-img">
+            <img src="imagens/rp.jpg" alt="Logo Dr. Rullian Pinheiro" class="footer-logo-img" width="100" height="100" loading="lazy" decoding="async">
           </div>
   <h4>Dr. Rullian Pinheiro</h4>
           <p class="footer-subtitle">Cirurgião-Dentista</p>
@@ -639,12 +654,12 @@
         <iframe 
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3600.3013821380874!2d-49.29565072513352!3d-25.43182183305744!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94dce3e41ce7073d%3A0x17aeb2f1a1d6a533!2sR.%20Padre%20Anchieta%2C%202348%20-%20Bigorrilho%2C%20Curitiba%20-%20PR%2C%2080730-000!5e0!3m2!1spt-BR!2sbr!4v1731285809000!5m2!1spt-BR!2sbr" 
           width="100%" 
-              height="200" 
+          height="200" 
           style="border:0;" 
           allowfullscreen="" 
           loading="lazy" 
-              referrerpolicy="no-referrer-when-downgrade"
-              title="Localização do consultório">
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Localização do consultório">
         </iframe>
           </div>
           <a href="https://www.google.com/maps/place/R.+Padre+Anchieta,+2348+-+Bigorrilho,+Curitiba+-+PR" target="_blank" class="footer-link-mapa" rel="noopener">
@@ -683,8 +698,8 @@
     </div>
   </div>
 
-  <script src="app.js"></script>
-  <script src="google-reviews.js"></script>
+  <script src="app.js" defer></script>
+  <script src="google-reviews.js" defer></script>
 
   <!-- Schema.org Structured Data -->
   <script type="application/ld+json">
