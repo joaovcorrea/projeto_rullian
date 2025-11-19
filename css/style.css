@@ -3,6 +3,19 @@
   box-sizing: border-box;
 }
 
+/* Classe para leitores de tela - texto oculto visualmente mas acessível */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
 body {
   font-family: 'Poppins', sans-serif;
   margin: 0;
@@ -150,6 +163,52 @@ section {
   /* Desabilitar hover effects no mobile */
   .card:hover, .card-servico:hover, .card-mais:hover {
     transform: none;
+  }
+  
+  /* Acessibilidade: garantir áreas de toque mínimas de 44x44px */
+  .social-links-header a,
+  .social-links a,
+  .carousel-btn,
+  .lightbox-btn,
+  button,
+  .btn-agendar,
+  .btn-avaliacoes {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  
+  /* Garantir espaçamento adequado entre elementos clicáveis */
+  .social-links-header {
+    gap: 12px;
+  }
+  
+  .social-links {
+    gap: 12px;
+  }
+  
+  /* Aumentar área de toque dos links sociais no mobile */
+  .social-links-header a,
+  .social-links a {
+    width: 48px;
+    height: 48px;
+    padding: 8px;
+    min-width: 48px;
+    min-height: 48px;
+  }
+  
+  /* Garantir que botões tenham padding adequado */
+  .btn-agendar,
+  .btn-avaliacoes {
+    padding: 14px 24px;
+    min-height: 48px;
+  }
+  
+  /* Garantir área de toque do botão de fechar lightbox */
+  .lightbox .close {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
   }
 }
 
@@ -1227,8 +1286,10 @@ h3::after {
 
 @media (max-width: 768px) {
   .lightbox-btn {
-    width: 45px;
-    height: 45px;
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
     font-size: 20px;
   }
 
