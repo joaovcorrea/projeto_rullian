@@ -52,7 +52,109 @@
   <meta name="msapplication-TileColor" content="#880606">
   <meta name="msapplication-TileImage" content="imagens/favicon.png">
   <!-- Preload da imagem LCP para melhor performance - crítico para LCP -->
-  <link rel="preload" as="image" href="imagens/doutor2.jpg" fetchpriority="high">
+  <link rel="preload" as="image" href="imagens/doutor2.jpg" fetchpriority="high" type="image/jpeg">
+  
+  <!-- Otimização: marcar quando fontes carregarem -->
+  <script>
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function() {
+        document.body.classList.add('fonts-loaded');
+      });
+    } else {
+      // Fallback: adicionar classe após tempo estimado
+      setTimeout(function() {
+        document.body.classList.add('fonts-loaded');
+      }, 2000);
+    }
+  </script>
+  
+  <!-- Google tag (gtag.js) - Google Ads Conversion Tracking - Otimizado -->
+  <script>
+    (function() {
+      // Inicializar dataLayer
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'AW-17215723523', {
+        'send_page_view': false // Desabilitar pageview automático para otimizar
+      });
+      
+      // Carregar script do Google Tag Manager de forma assíncrona
+      const isMobile = window.innerWidth <= 768;
+      
+      function loadGoogleTag() {
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=AW-17215723523';
+        script.crossOrigin = 'anonymous';
+        
+        // Rastrear PageView após carregar (otimizado)
+        script.onload = function() {
+          // No mobile, adiar pageview
+          if (isMobile) {
+            if ('requestIdleCallback' in window) {
+              requestIdleCallback(function() {
+                gtag('event', 'page_view', {
+                  'send_to': 'AW-17215723523'
+                });
+              }, { timeout: 2000 });
+            } else {
+              setTimeout(function() {
+                gtag('event', 'page_view', {
+                  'send_to': 'AW-17215723523'
+                });
+              }, 1500);
+            }
+          } else {
+            // Desktop: rastrear imediatamente
+            gtag('event', 'page_view', {
+              'send_to': 'AW-17215723523'
+            });
+          }
+        };
+        
+        const firstScript = document.getElementsByTagName('script')[0];
+        firstScript.parentNode.insertBefore(script, firstScript);
+      }
+      
+      // No mobile, adiar carregamento
+      if (isMobile) {
+        // Carregar após interação ou após 2 segundos
+        let tagLoaded = false;
+        const loadTag = function() {
+          if (!tagLoaded) {
+            tagLoaded = true;
+            if ('requestIdleCallback' in window) {
+              requestIdleCallback(loadGoogleTag, { timeout: 2000 });
+            } else {
+              setTimeout(loadGoogleTag, 1500);
+            }
+            document.removeEventListener('scroll', loadTag, { passive: true });
+            document.removeEventListener('touchstart', loadTag, { passive: true });
+          }
+        };
+        
+        document.addEventListener('scroll', loadTag, { passive: true, once: true });
+        document.addEventListener('touchstart', loadTag, { passive: true, once: true });
+        
+        // Fallback: carregar após 3 segundos
+        setTimeout(function() {
+          if (!tagLoaded) {
+            loadTag();
+          }
+        }, 3000);
+      } else {
+        // Desktop: carregar após DOMContentLoaded
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(loadGoogleTag, 300);
+          });
+        } else {
+          setTimeout(loadGoogleTag, 300);
+        }
+      }
+    })();
+  </script>
   
   <!-- Preconnect para recursos externos -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -60,13 +162,69 @@
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
   <link rel="preconnect" href="https://www.instagram.com" crossorigin>
   <link rel="dns-prefetch" href="https://www.instagram.com">
+  <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
+  <link rel="dns-prefetch" href="https://connect.facebook.net">
+  <link rel="dns-prefetch" href="https://www.facebook.com">
+  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com">
   
-  <!-- Google Fonts com font-display: swap -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-  <noscript><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"></noscript>
+  <!-- Google Fonts - otimizado para mobile: apenas pesos essenciais -->
+  <script>
+    (function() {
+      const isMobile = window.innerWidth <= 768;
+      // No mobile, carregar apenas pesos essenciais (400, 600) para economizar
+      const fontWeights = isMobile ? '400;600' : '300;400;500;600;700';
+      const fontUrl = `https://fonts.googleapis.com/css2?family=Poppins:wght@${fontWeights}&display=swap`;
+      
+      if (isMobile) {
+        // No mobile, adiar fontes até após primeiro paint
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(function() {
+            const link = document.createElement('link');
+            link.href = fontUrl;
+            link.rel = 'stylesheet';
+            link.media = 'print';
+            link.onload = function() { this.media = 'all'; };
+            document.head.appendChild(link);
+          }, { timeout: 1000 });
+        } else {
+          setTimeout(function() {
+            const link = document.createElement('link');
+            link.href = fontUrl;
+            link.rel = 'stylesheet';
+            link.media = 'print';
+            link.onload = function() { this.media = 'all'; };
+            document.head.appendChild(link);
+          }, 500);
+        }
+      } else {
+        // Desktop: carregar normalmente mas assíncrono
+        const link = document.createElement('link');
+        link.href = fontUrl;
+        link.rel = 'stylesheet';
+        link.media = 'print';
+        link.onload = function() { this.media = 'all'; };
+        document.head.appendChild(link);
+      }
+    })();
+  </script>
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"></noscript>
   
   <!-- CSS principal - crítico, carrega normalmente -->
   <link rel="stylesheet" href="css/style.css">
+  
+  <!-- Otimização: CSS crítico inline para mobile (primeira dobra) -->
+  <style>
+    /* CSS crítico mínimo para primeira renderização no mobile */
+    @media (max-width: 768px) {
+      body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #333; }
+      header { min-height: 400px; position: relative; overflow: hidden; }
+      .header-container { position: relative; z-index: 1; }
+      .header-background { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, #722F37 0%, #8B3E47 100%); z-index: 0; }
+      img[fetchpriority="high"] { display: block; max-width: 100%; height: auto; }
+      .foto-doutor-header img { border-radius: 50%; object-fit: cover; }
+    }
+  </style>
   
   <!-- Font Awesome - carregado de forma assíncrona e adiado no mobile -->
   <script>
@@ -112,7 +270,7 @@
     <div class="foto-doutor-header">
       <div class="foto-wrapper">
         <div class="foto-glow"></div>
-      <img src="imagens/doutor2.jpg" alt="Dr. Rullian Pinheiro - Cirurgião-Dentista em Curitiba, Bigorrilho" width="400" height="400" fetchpriority="high" decoding="async">
+      <img src="imagens/doutor2.jpg" alt="Dr. Rullian Pinheiro - Cirurgião-Dentista em Curitiba, Bigorrilho" width="400" height="400" fetchpriority="high" decoding="async" importance="high">
       </div>
       <div class="social-links-header">
         <a href="https://wa.me/5541997484686" class="whatsapp" target="_blank" rel="noopener" title="WhatsApp" aria-label="Abrir WhatsApp do Dr. Rullian Pinheiro">
@@ -163,7 +321,7 @@
             </a>
           </div>
         </div>
-        <button class="btn-agendar" onclick="window.location.href='https://wa.me/5541997484686'">
+        <button class="btn-agendar" onclick="trackConversion('header'); window.location.href='https://wa.me/5541997484686'">
           <i class="fab fa-whatsapp"></i>
           <span>Agende sua consulta</span>
           <i class="fas fa-arrow-right"></i>
@@ -203,7 +361,7 @@
         <p class="emergencia-info">
           <strong>ATENDIMENTO DE EMERGÊNCIA 24H:</strong> Para sua segurança e um atendimento mais eficaz, <strong>é necessário contato prévio por telefone</strong>. Ligue antes de se dirigir ao consultório para que eu possa compreender o caso e me preparar para recebê-lo(a) da melhor forma.
         </p>
-        <button class="btn-agendar" onclick="window.location.href='https://wa.me/5541997484686'">
+        <button class="btn-agendar" onclick="trackConversion('apresentacao'); window.location.href='https://wa.me/5541997484686'">
           <i class="fab fa-whatsapp"></i>
           <span>Agende sua consulta</span>
         </button>
@@ -558,7 +716,7 @@
     </div>
     <div class="sorrisos-cta">
       <p>Quer fazer parte desta história? </p><p> Agende sua consulta e transforme seu sorriso também!</p>
-      <button class="btn-agendar" onclick="window.location.href='https://wa.me/5541997484686'">
+      <button class="btn-agendar" onclick="trackConversion('sorrisos'); window.location.href='https://wa.me/5541997484686'">
         <i class="fab fa-whatsapp"></i>
         <span>Agende sua consulta</span>
       </button>
@@ -734,6 +892,109 @@
 
   <script src="app.js" defer></script>
   <script src="google-reviews.js" defer></script>
+  
+  <!-- Função para rastrear conversões do Google Ads -->
+  <script>
+    function trackConversion(location) {
+      // Rastrear conversão no Google Ads
+      if (window.gtag) {
+        gtag('event', 'conversion', {
+          'send_to': 'AW-17215723523/1e-SCMH8gd4aEIOwjJFA',
+          'value': 1.0,
+          'currency': 'BRL',
+          'transaction_id': 'whatsapp_' + location + '_' + Date.now()
+        });
+      }
+      
+      // Rastrear também no Meta Pixel (se disponível)
+      if (window.fbq) {
+        fbq('track', 'Lead', {
+          content_name: 'Agendar Consulta - ' + location,
+          content_category: 'Conversion'
+        });
+      }
+    }
+  </script>
+
+  <!-- Meta Pixel Code - Otimizado para não bloquear renderização -->
+  <script>
+    (function() {
+      // Função para carregar o Meta Pixel de forma otimizada
+      function loadMetaPixel() {
+        if (window.fbq) return; // Já carregado
+        
+        // Criar função fbq
+        window.fbq = function() {
+          (window.fbq.q = window.fbq.q || []).push(arguments);
+        };
+        window.fbq.l = +new Date();
+        window.fbq.q = [];
+        
+        // Carregar script do Facebook de forma assíncrona
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://connect.facebook.net/en_US/fbevents.js';
+        script.crossOrigin = 'anonymous';
+        
+        // Inicializar pixel após carregar
+        script.onload = function() {
+          if (window.fbq) {
+            window.fbq('init', '843909488574498');
+            window.fbq('track', 'PageView');
+          }
+        };
+        
+        var firstScript = document.getElementsByTagName('script')[0];
+        firstScript.parentNode.insertBefore(script, firstScript);
+      }
+      
+      // No mobile, adiar carregamento do pixel para não impactar performance
+      const isMobile = window.innerWidth <= 768;
+      
+      if (isMobile) {
+        // No mobile, carregar após interação do usuário ou após 2 segundos
+        let pixelLoaded = false;
+        const loadPixel = function() {
+          if (!pixelLoaded) {
+            pixelLoaded = true;
+            if ('requestIdleCallback' in window) {
+              requestIdleCallback(loadMetaPixel, { timeout: 2000 });
+            } else {
+              setTimeout(loadMetaPixel, 1500);
+            }
+            document.removeEventListener('scroll', loadPixel, { passive: true });
+            document.removeEventListener('touchstart', loadPixel, { passive: true });
+          }
+        };
+        
+        // Carregar após scroll ou toque
+        document.addEventListener('scroll', loadPixel, { passive: true, once: true });
+        document.addEventListener('touchstart', loadPixel, { passive: true, once: true });
+        
+        // Fallback: carregar após 3 segundos se não houver interação
+        setTimeout(function() {
+          if (!pixelLoaded) {
+            loadPixel();
+          }
+        }, 3000);
+      } else {
+        // Desktop: carregar após DOMContentLoaded
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(loadMetaPixel, 500);
+          });
+        } else {
+          setTimeout(loadMetaPixel, 500);
+        }
+      }
+    })();
+  </script>
+  <noscript>
+    <img height="1" width="1" style="display:none" 
+         src="https://www.facebook.com/tr?id=843909488574498&ev=PageView&noscript=1" 
+         alt="" />
+  </noscript>
+  <!-- End Meta Pixel Code -->
 
   <!-- Schema.org Structured Data -->
   <script type="application/ld+json">
