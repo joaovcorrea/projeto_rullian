@@ -51,21 +51,35 @@
   <meta name="theme-color" content="#880606">
   <meta name="msapplication-TileColor" content="#880606">
   <meta name="msapplication-TileImage" content="imagens/favicon.png">
-  <!-- Preload da imagem LCP para melhor performance - crítico para LCP -->
+  <!-- Preload de imagens críticas para melhor performance - LCP -->
   <link rel="preload" as="image" href="imagens/doutor2.jpg" fetchpriority="high" type="image/jpeg">
+  <link rel="preload" as="image" href="imagens/rp.jpg" type="image/jpeg">
   
-  <!-- Otimização: marcar quando fontes carregarem -->
+  <!-- Otimização: marcar quando fontes carregarem (não bloqueante) -->
   <script>
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(function() {
-        document.body.classList.add('fonts-loaded');
-      });
-    } else {
-      // Fallback: adicionar classe após tempo estimado
-      setTimeout(function() {
-        document.body.classList.add('fonts-loaded');
-      }, 2000);
-    }
+    (function() {
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(function() {
+          if (document.body) {
+            document.body.classList.add('fonts-loaded');
+          }
+        }).catch(function() {
+          // Fallback silencioso
+          setTimeout(function() {
+            if (document.body) {
+              document.body.classList.add('fonts-loaded');
+            }
+          }, 2000);
+        });
+      } else {
+        // Fallback: adicionar classe após tempo estimado
+        setTimeout(function() {
+          if (document.body) {
+            document.body.classList.add('fonts-loaded');
+          }
+        }, 2000);
+      }
+    })();
   </script>
   
   <!-- Google tag (gtag.js) - Google Ads Conversion Tracking - Otimizado -->
@@ -167,6 +181,9 @@
   <link rel="dns-prefetch" href="https://www.facebook.com">
   <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
   <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+  <link rel="preconnect" href="https://maps.googleapis.com" crossorigin>
+  <link rel="dns-prefetch" href="https://maps.googleapis.com">
+  <link rel="dns-prefetch" href="https://maps.gstatic.com">
   
   <!-- Google Fonts - otimizado para mobile: apenas pesos essenciais -->
   <script>
@@ -270,10 +287,10 @@
     <div class="foto-doutor-header">
       <div class="foto-wrapper">
         <div class="foto-glow"></div>
-      <img src="imagens/doutor2.jpg" alt="Dr. Rullian Pinheiro - Cirurgião-Dentista em Curitiba, Bigorrilho" width="400" height="400" fetchpriority="high" decoding="async" importance="high">
+      <img src="imagens/doutor2.jpg" alt="Dr. Rullian Pinheiro - Cirurgião-Dentista em Curitiba, Bigorrilho" width="400" height="400" fetchpriority="high" decoding="async">
       </div>
       <div class="social-links-header">
-        <a href="https://wa.me/5541997484686" class="whatsapp" target="_blank" rel="noopener" title="WhatsApp" aria-label="Abrir WhatsApp do Dr. Rullian Pinheiro">
+        <a href="#" onclick="event.preventDefault(); openWhatsApp('Olá, Dr. Rullian! Estou vindo do site e gostaria de iniciar um atendimento.', 'header-social'); return false;" class="whatsapp" title="WhatsApp" aria-label="Abrir WhatsApp do Dr. Rullian Pinheiro">
           <i class="fab fa-whatsapp" aria-hidden="true"></i>
           <span class="sr-only">WhatsApp</span>
         </a>
@@ -321,7 +338,7 @@
             </a>
           </div>
         </div>
-        <button class="btn-agendar" onclick="trackConversion('header'); window.location.href='https://wa.me/5541997484686'">
+        <button class="btn-agendar" onclick="openWhatsApp('Olá, Dr. Rullian! Estou vindo do site e gostaria de iniciar um atendimento.', 'header')">
           <i class="fab fa-whatsapp"></i>
           <span>Agende sua consulta</span>
           <i class="fas fa-arrow-right"></i>
@@ -361,9 +378,9 @@
         <p class="emergencia-info">
           <strong>ATENDIMENTO DE EMERGÊNCIA 24H:</strong> Para sua segurança e um atendimento mais eficaz, <strong>é necessário contato prévio por telefone</strong>. Ligue antes de se dirigir ao consultório para que eu possa compreender o caso e me preparar para recebê-lo(a) da melhor forma.
         </p>
-        <button class="btn-agendar" onclick="trackConversion('apresentacao'); window.location.href='https://wa.me/5541997484686'">
+        <button class="btn-agendar" onclick="openWhatsApp('Olá, Dr. Rullian! Estou vindo do site e gostaria de iniciar um atendimento de emergência.', 'apresentacao')">
           <i class="fab fa-whatsapp"></i>
-          <span>Agende sua consulta</span>
+          <span>Agende Sua Consulta de Emergência</span>
         </button>
       </div>
       <div class="apresentacao-imagem">
@@ -413,7 +430,7 @@
         <div class="video-doutor">
           <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DHcVGIDsOU-" data-instgrm-version="14" style="background:#FFF; border:0; border-radius:15px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; -webkit-border-radius:15px; -moz-border-radius:15px;">
             <div style="padding:16px;">
-              <a href="https://www.instagram.com/p/DHcVGIDsOU-" style="background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank">
+              <a href="https://www.instagram.com/p/DHcVGIDsOU-" style="background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank" rel="noopener noreferrer">
                 <div style="display: flex; flex-direction: row; align-items: center;">
                   <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div>
                   <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;">
@@ -432,7 +449,7 @@
                   </svg>
                 </div>
                 <p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;">
-                  <a href="https://www.instagram.com/p/DHcVGIDsOU-" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">Ver este post no Instagram</a>
+                  <a href="https://www.instagram.com/p/DHcVGIDsOU-" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank" rel="noopener noreferrer">Ver este post no Instagram</a>
                 </p>
               </a>
             </div>
@@ -716,7 +733,7 @@
     </div>
     <div class="sorrisos-cta">
       <p>Quer fazer parte desta história? </p><p> Agende sua consulta e transforme seu sorriso também!</p>
-      <button class="btn-agendar" onclick="trackConversion('sorrisos'); window.location.href='https://wa.me/5541997484686'">
+      <button class="btn-agendar" onclick="openWhatsApp('Olá, Dr. Rullian! Estou vindo do site e gostaria de iniciar um atendimento.', 'sorrisos')">
         <i class="fab fa-whatsapp"></i>
         <span>Agende sua consulta</span>
       </button>
@@ -768,7 +785,7 @@
         </p>
       </div>
     </div>
-    <button class="btn-avaliacoes" onclick="window.open('https://www.google.com/maps/place/R.+Padre+Anchieta,+2348+-+Bigorrilho,+Curitiba+-+PR','_blank')">
+    <button class="btn-avaliacoes" onclick="window.open('https://www.google.com/maps/place/Cirurgião+Dentista+e+Clínica+Odontológica+Rullian+Pinheiro/@-25.4337093,-49.3044303,17z/data=!4m17!1m8!3m7!1s0x94dce3e900792e31:0x5c9beda6303e59b6!2sR.+Padre+Anchieta,+2348+-+Bigorrilho,+Curitiba+-+PR,+80730-001!3b1!8m2!3d-25.4337141!4d-49.3018499!16s%2Fg%2F11c20sgndr!3m7!1s0x94dce3e41ce7073d:0x17aeb2f1a1d6a533!8m2!3d-25.4337142!4d-49.30185!9m1!1b1!16s%2Fg%2F11xkp4ywyw?entry=ttu&g_ep=EgoyMDI1MTExNy4wIKXMDSoASAFQAw%3D%3D','_blank')">
       Ver mais avaliações no Google
     </button>
   </section>
@@ -790,7 +807,7 @@
           <div class="footer-social">
             <p class="footer-social-title">Siga-nos</p>
   <div class="social-links">
-              <a href="https://wa.me/5541997484686" target="_blank" rel="noopener" class="whatsapp" title="WhatsApp" aria-label="Abrir WhatsApp do Dr. Rullian Pinheiro">
+              <a href="#" onclick="event.preventDefault(); openWhatsApp('Olá, Dr. Rullian! Estou vindo do site e gostaria de iniciar um atendimento.', 'footer-social'); return false;" class="whatsapp" title="WhatsApp" aria-label="Abrir WhatsApp do Dr. Rullian Pinheiro">
                 <i class="fab fa-whatsapp" aria-hidden="true"></i>
                 <span class="sr-only">WhatsApp</span>
               </a>
@@ -868,7 +885,7 @@
     </div>
   </footer>
 
-  <a href="https://wa.me/5541997484686" target="_blank" rel="noopener" class="whatsapp-float" id="whatsappFloat" title="Fale conosco no WhatsApp" aria-label="Abrir WhatsApp para falar com o Dr. Rullian Pinheiro">
+  <a href="#" onclick="event.preventDefault(); openWhatsApp('Olá, Dr. Rullian! Estou vindo do site e gostaria de iniciar um atendimento.', 'float'); return false;" class="whatsapp-float" id="whatsappFloat" title="Fale conosco no WhatsApp" aria-label="Abrir WhatsApp para falar com o Dr. Rullian Pinheiro">
     <i class="fab fa-whatsapp" aria-hidden="true"></i>
     <span class="whatsapp-tooltip">Fale Conosco!</span>
     <span class="sr-only">WhatsApp - Fale conosco</span>
@@ -893,6 +910,63 @@
   <script src="app.js" defer></script>
   <script src="google-reviews.js" defer></script>
   
+  <!-- Otimização: Carregar Instagram embeds apenas quando visíveis -->
+  <script>
+    (function() {
+      // Carregar script do Instagram apenas quando necessário
+      let instagramScriptLoaded = false;
+      
+      function loadInstagramScript() {
+        if (instagramScriptLoaded) return;
+        instagramScriptLoaded = true;
+        
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.instagram.com/embed.js';
+        script.crossOrigin = 'anonymous';
+        document.body.appendChild(script);
+      }
+      
+      // Usar Intersection Observer para carregar embeds quando visíveis
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              loadInstagramScript();
+              // Processar embeds visíveis
+              if (window.instgrm && typeof window.instgrm.Embeds === 'object') {
+                window.instgrm.Embeds.process();
+              }
+              observer.unobserve(entry.target);
+            }
+          });
+        }, {
+          rootMargin: '50px' // Carregar 50px antes de ficar visível
+        });
+        
+        // Observar todos os embeds do Instagram
+        document.addEventListener('DOMContentLoaded', function() {
+          const instagramEmbeds = document.querySelectorAll('.instagram-media');
+          instagramEmbeds.forEach(function(embed) {
+            observer.observe(embed);
+          });
+          
+          // Fallback: carregar após 3 segundos se nenhum embed estiver visível
+          setTimeout(function() {
+            if (!instagramScriptLoaded) {
+              loadInstagramScript();
+            }
+          }, 3000);
+        });
+      } else {
+        // Fallback para navegadores sem Intersection Observer
+        document.addEventListener('DOMContentLoaded', function() {
+          setTimeout(loadInstagramScript, 2000);
+        });
+      }
+    })();
+  </script>
+  
   <!-- Função para rastrear conversões do Google Ads -->
   <script>
     function trackConversion(location) {
@@ -913,6 +987,24 @@
           content_category: 'Conversion'
         });
       }
+    }
+
+    // Função para abrir WhatsApp com mensagem automática (otimizada)
+    function openWhatsApp(message, location) {
+      // Rastrear conversão de forma não bloqueante
+      if (typeof trackConversion === 'function') {
+        try {
+          trackConversion(location);
+        } catch(e) {
+          // Silenciosamente falha se tracking não estiver disponível
+        }
+      }
+      
+      // Construir URL de forma eficiente
+      const whatsappUrl = 'https://wa.me/5541997484686?text=' + encodeURIComponent(message);
+      
+      // Abre o WhatsApp (funciona tanto no app mobile quanto no web)
+      window.location.href = whatsappUrl;
     }
   </script>
 
