@@ -44,16 +44,47 @@
   <meta name="twitter:image:alt" content="Dr. Rullian Pinheiro - Cirurgião-Dentista">
   
   <!-- Favicon completo para diferentes dispositivos -->
-  <link rel="icon" type="image/png" sizes="32x32" href="imagens/favicon.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="imagens/favicon.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="imagens/rp.jpg">
-  <link rel="icon" type="image/png" href="imagens/favicon.png">
+  <link rel="shortcut icon" href="/imagens/favicon.png" type="image/png">
+  <link rel="icon" type="image/png" href="/imagens/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/imagens/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/imagens/favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/imagens/rp.jpg">
   <meta name="theme-color" content="#880606">
   <meta name="msapplication-TileColor" content="#880606">
-  <meta name="msapplication-TileImage" content="imagens/favicon.png">
+  <meta name="msapplication-TileImage" content="/imagens/favicon.png">
   <!-- Preload de imagens críticas para melhor performance - LCP -->
-  <link rel="preload" as="image" href="imagens/doutor2.jpg" fetchpriority="high" type="image/jpeg">
-  <link rel="preload" as="image" href="imagens/rp.jpg" type="image/jpeg">
+  <!-- No mobile, preload apenas a imagem mais crítica (hero) -->
+  <script>
+    (function() {
+      const isMobile = window.innerWidth <= 768;
+      if (!isMobile) {
+        // Desktop: preload ambas as imagens críticas
+        const link1 = document.createElement('link');
+        link1.rel = 'preload';
+        link1.as = 'image';
+        link1.href = '/imagens/doutor2.jpg';
+        link1.setAttribute('fetchpriority', 'high');
+        link1.type = 'image/jpeg';
+        document.head.appendChild(link1);
+        
+        const link2 = document.createElement('link');
+        link2.rel = 'preload';
+        link2.as = 'image';
+        link2.href = '/imagens/rp.jpg';
+        link2.type = 'image/jpeg';
+        document.head.appendChild(link2);
+      } else {
+        // Mobile: preload apenas a imagem hero (mais crítica)
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'image';
+        link.href = '/imagens/doutor2.jpg';
+        link.setAttribute('fetchpriority', 'high');
+        link.type = 'image/jpeg';
+        document.head.appendChild(link);
+      }
+    })();
+  </script>
   
   <!-- Otimização: marcar quando fontes carregarem (não bloqueante) -->
   <script>
@@ -170,20 +201,49 @@
     })();
   </script>
   
-  <!-- Preconnect para recursos externos -->
+  <!-- Preconnect para recursos externos - otimizado para mobile -->
+  <!-- Sempre preconnect para Google Fonts (crítico) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-  <link rel="preconnect" href="https://www.instagram.com" crossorigin>
-  <link rel="dns-prefetch" href="https://www.instagram.com">
-  <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
-  <link rel="dns-prefetch" href="https://connect.facebook.net">
-  <link rel="dns-prefetch" href="https://www.facebook.com">
-  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
-  <link rel="dns-prefetch" href="https://www.googletagmanager.com">
-  <link rel="preconnect" href="https://maps.googleapis.com" crossorigin>
-  <link rel="dns-prefetch" href="https://maps.googleapis.com">
-  <link rel="dns-prefetch" href="https://maps.gstatic.com">
+  <!-- No mobile, apenas dns-prefetch para recursos adiados -->
+  <script>
+    (function() {
+      const isMobile = window.innerWidth <= 768;
+      if (!isMobile) {
+        // Desktop: preconnect para todos os recursos
+        const resources = [
+          { href: 'https://cdnjs.cloudflare.com', crossorigin: true },
+          { href: 'https://www.instagram.com', crossorigin: true },
+          { href: 'https://connect.facebook.net', crossorigin: true },
+          { href: 'https://www.googletagmanager.com', crossorigin: true },
+          { href: 'https://maps.googleapis.com', crossorigin: true }
+        ];
+        resources.forEach(resource => {
+          const link = document.createElement('link');
+          link.rel = 'preconnect';
+          link.href = resource.href;
+          if (resource.crossorigin) link.crossOrigin = 'anonymous';
+          document.head.appendChild(link);
+        });
+        // DNS prefetch para recursos secundários
+        ['https://www.instagram.com', 'https://connect.facebook.net', 'https://www.facebook.com', 
+         'https://www.googletagmanager.com', 'https://maps.googleapis.com', 'https://maps.gstatic.com'].forEach(href => {
+          const link = document.createElement('link');
+          link.rel = 'dns-prefetch';
+          link.href = href;
+          document.head.appendChild(link);
+        });
+      } else {
+        // Mobile: apenas dns-prefetch para recursos que serão usados depois
+        ['https://www.instagram.com', 'https://www.googletagmanager.com'].forEach(href => {
+          const link = document.createElement('link');
+          link.rel = 'dns-prefetch';
+          link.href = href;
+          document.head.appendChild(link);
+        });
+      }
+    })();
+  </script>
   
   <!-- Google Fonts - otimizado para mobile: apenas pesos essenciais -->
   <script>
@@ -228,18 +288,39 @@
   <noscript><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"></noscript>
   
   <!-- CSS principal - crítico, carrega normalmente -->
-  <link rel="stylesheet" href="css/style.css">
+  <!-- Otimização mobile: carregar CSS de forma não bloqueante -->
+  <link rel="stylesheet" href="css/style.css" media="all">
+  <script>
+    // No mobile, garantir que CSS não bloqueie renderização
+    (function() {
+      if (window.innerWidth <= 768) {
+        const link = document.querySelector('link[href="css/style.css"]');
+        if (link) {
+          link.media = 'print';
+          link.onload = function() {
+            this.media = 'all';
+          };
+        }
+      }
+    })();
+  </script>
   
   <!-- Otimização: CSS crítico inline para mobile (primeira dobra) -->
   <style>
     /* CSS crítico mínimo para primeira renderização no mobile */
     @media (max-width: 768px) {
-      body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #333; }
+      body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #333; background: #f5f5f5; }
       header { min-height: 400px; position: relative; overflow: hidden; }
       .header-container { position: relative; z-index: 1; }
       .header-background { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, #722F37 0%, #8B3E47 100%); z-index: 0; }
       img[fetchpriority="high"] { display: block; max-width: 100%; height: auto; }
       .foto-doutor-header img { border-radius: 50%; object-fit: cover; }
+      /* Otimização: prevenir layout shift */
+      .foto-doutor-header { aspect-ratio: 1; }
+      /* Otimização: melhorar renderização inicial */
+      * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+      /* Otimização: reduzir repaints */
+      .carousel-wrapper { will-change: transform; }
     }
   </style>
   

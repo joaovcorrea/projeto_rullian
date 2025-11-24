@@ -206,6 +206,7 @@ class Carousel {
     this.startAutoplay();
     this.container.addEventListener('mouseenter', () => this.stopAutoplay());
     this.container.addEventListener('mouseleave', () => this.startAutoplay());
+    this.setupVisibilityHandling();
     this.updateCarousel();
   }
 
@@ -290,21 +291,21 @@ class Carousel {
 
   startAutoplay() {
     this.stopAutoplay();
-    // Desabilitar autoplay no mobile para melhor performance
+    // Desabilitar autoplay no mobile para melhor performance e economia de bateria
     const isMobile = window.innerWidth <= 768;
     if (!isMobile && this.totalSlides > 1) {
       // Usar requestAnimationFrame para melhor performance
       let lastTime = performance.now();
+      let frameId = null;
       const autoplayFrame = (currentTime) => {
         if (currentTime - lastTime >= 5000) {
           this.nextSlide();
           lastTime = currentTime;
         }
-        if (!this.autoplayInterval) {
-          this.autoplayInterval = requestAnimationFrame(autoplayFrame);
-        }
+        frameId = requestAnimationFrame(autoplayFrame);
       };
-      this.autoplayInterval = requestAnimationFrame(autoplayFrame);
+      frameId = requestAnimationFrame(autoplayFrame);
+      this.autoplayInterval = frameId;
     }
   }
   
@@ -316,6 +317,20 @@ class Carousel {
         clearInterval(this.autoplayInterval);
       }
       this.autoplayInterval = null;
+    }
+  }
+  
+  // Otimização: pausar autoplay quando página não está visível (economia de bateria)
+  setupVisibilityHandling() {
+    if (typeof document.hidden !== 'undefined') {
+      const handleVisibilityChange = () => {
+        if (document.hidden) {
+          this.stopAutoplay();
+        } else if (!this.autoplayInterval && window.innerWidth > 768) {
+          this.startAutoplay();
+        }
+      };
+      document.addEventListener('visibilitychange', handleVisibilityChange);
     }
   }
 }
@@ -361,20 +376,42 @@ if (document.readyState === 'loading') {
 }
 
 // ===== SMOOTH SCROLL =====
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function (e) {
+// Otimizado: usar passive listeners e debounce
+(function() {
+  const isMobile = window.innerWidth <= 768;
+  const anchors = document.querySelectorAll('a[href^="#"]');
+  
+  // Função otimizada de scroll
+  const handleScroll = function(e) {
     e.preventDefault();
-    const target = document.querySelector(this.getAttribute('href'));
+    const href = this.getAttribute('href');
+    if (!href || href === '#') return;
+    
+    const target = document.querySelector(href);
     if (target) {
-      target.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
+      // No mobile, usar scroll mais rápido
+      if (isMobile) {
+        const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - 80;
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+        });
+      } else {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
     }
+  };
+  
+  anchors.forEach(anchor => {
+    anchor.addEventListener('click', handleScroll, { passive: false });
   });
-});
+})();
 
 // ===== SCROLL ANIMATIONS =====
+// Otimizado com throttling e melhor performance
 function initScrollAnimations() {
   const isMobile = window.innerWidth <= 768;
   
@@ -383,13 +420,29 @@ function initScrollAnimations() {
     // Usar requestIdleCallback para não bloquear renderização
     if ('requestIdleCallback' in window) {
       requestIdleCallback(() => {
-        document.querySelectorAll('section, .card, .card-mais, .dif-item, .video-card').forEach(el => {
-          el.classList.add('animate-in');
-        });
+        // Processar em batches para não bloquear
+        const elements = document.querySelectorAll('section, .card, .card-mais, .dif-item, .video-card');
+        const batchSize = 10;
+        let index = 0;
+        
+        const processBatch = () => {
+          const end = Math.min(index + batchSize, elements.length);
+          for (let i = index; i < end; i++) {
+            elements[i].classList.add('animate-in');
+          }
+          index = end;
+          
+          if (index < elements.length) {
+            requestAnimationFrame(processBatch);
+          }
+        };
+        
+        processBatch();
       }, { timeout: 1000 });
     } else {
       requestAnimationFrame(() => {
-        document.querySelectorAll('section, .card, .card-mais, .dif-item, .video-card').forEach(el => {
+        const elements = document.querySelectorAll('section, .card, .card-mais, .dif-item, .video-card');
+        elements.forEach(el => {
           el.classList.add('animate-in');
         });
       });

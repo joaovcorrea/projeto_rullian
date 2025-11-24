@@ -67,6 +67,60 @@ body {
   img[loading="lazy"] {
     content-visibility: auto;
   }
+  
+  /* Otimização: usar contain para isolar seções e melhorar renderização */
+  section {
+    contain: layout style;
+    content-visibility: auto;
+    contain-intrinsic-size: auto 500px;
+  }
+  
+  /* Desabilitar animações pesadas que não são essenciais */
+  @keyframes pulseGlow {
+    0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+  }
+  
+  /* Reduzir complexidade de animações de card */
+  .card-icon-glow {
+    animation: none;
+  }
+  
+  /* Otimizar transformações - usar GPU acceleration apenas quando necessário */
+  .carousel-wrapper {
+    will-change: transform;
+    transform: translateZ(0);
+  }
+  
+  /* Reduzir repaints - otimizar elementos que mudam frequentemente */
+  .carousel-dot {
+    will-change: opacity;
+  }
+  
+  /* Desabilitar animações de entrada que não são críticas */
+  .animate-in {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  
+  /* Otimizar scroll performance */
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Reduzir complexidade de filtros */
+  .lightbox-btn,
+  .lightbox .close {
+    backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.95);
+  }
+  
+  /* Otimizar renderização de elementos fixos */
+  #whatsappFloat {
+    will-change: transform;
+    transform: translateZ(0);
+  }
 }
 
 p {

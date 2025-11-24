@@ -1,0 +1,13 @@
+# Redirecionar favicon.ico para o favicon.png
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^favicon\.ico$ /imagens/favicon.png [L]
+</IfModule>
+
+# Cache do favicon para melhor performance
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
+</IfModule>
+
