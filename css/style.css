@@ -339,6 +339,11 @@ section {
   .header-background {
     background: linear-gradient(135deg, #722F37 0%, #8B3E47 100%);
   }
+
+  .header-background::after {
+    opacity: 0.16;
+    background-size: 180px 180px;
+  }
 }
 
 header {
@@ -386,6 +391,25 @@ header {
     radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
     radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.2) 0%, transparent 70%);
   animation: pulse 8s ease-in-out infinite;
+}
+
+.header-background::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* Mantem as mesmas cores e adiciona simbolos odontologicos discretos */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220'%3E%3Cg fill='none' stroke='rgba(255,255,255,0.16)' stroke-width='2'%3E%3Cpath d='M110 54c-22 0-34 14-34 34 0 22 9 48 18 58 5 6 12 6 16 0 5-8 6-19 10-19s5 11 10 19c4 6 11 6 16 0 9-10 18-36 18-58 0-20-12-34-34-34z'/%3E%3Cpath d='M48 164h18M57 155v18'/%3E%3Cpath d='M170 58l6 6M176 58l-6 6'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 210px 210px;
+  opacity: 0.26;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  animation: dentalPatternFloat 24s linear infinite;
+}
+
+@keyframes dentalPatternFloat {
+  0% { background-position: 0 0; }
+  100% { background-position: 210px 120px; }
 }
 
 .header-shapes {
@@ -479,6 +503,19 @@ header .logo {
   animation: titleShine 3s ease-in-out infinite;
 }
 
+.title-tooth {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 10px;
+  color: rgba(255, 255, 255, 0.98);
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.98);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+.title-tooth .fa-tooth {
+  font-size: 0.88em;
+}
+
 @keyframes titleShine {
   0%, 100% {
     filter: brightness(1);
@@ -565,6 +602,33 @@ header .logo {
 .header-features-container .btn-agendar {
   align-self: flex-start;
   margin-top: 0;
+}
+
+.header-cta-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.header-cta-group .btn-agendar,
+.header-cta-group .btn-emergencia-header {
+  width: 100%;
+  min-width: 340px;
+  min-height: 56px;
+  justify-content: space-between;
+  padding-left: 22px;
+  padding-right: 22px;
+}
+
+.btn-emergencia-header {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 0.9rem;
+  padding: 12px 22px;
+  border-radius: 14px;
 }
 
 .feature-item {
@@ -1967,6 +2031,7 @@ footer::after {
   width: 100%;
   height: 100%;
   display: block;
+  transform: translateY(1px);
 }
 
 @media (max-width: 768px) {
@@ -2029,6 +2094,19 @@ footer::after {
     padding: 14px 30px;
     font-size: 0.95em;
     gap: 8px;
+  }
+
+  .header-cta-group {
+    width: 100%;
+    max-width: 300px;
+    align-items: stretch;
+  }
+
+  .header-cta-group .btn-agendar,
+  .header-cta-group .btn-emergencia-header {
+    width: 100%;
+    min-width: 0;
+    justify-content: center;
   }
 
   .btn-agendar i {
@@ -2844,6 +2922,27 @@ footer::after {
   font-weight: 700;
   position: relative;
   z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dif-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, rgba(136, 6, 6, 0.14), rgba(136, 6, 6, 0.05));
+  border: 1px solid rgba(136, 6, 6, 0.18);
+  box-shadow: 0 6px 14px rgba(136, 6, 6, 0.12);
+  flex-shrink: 0;
+}
+
+.dif-icon i {
+  color: #880606;
+  font-size: 0.95rem;
 }
 
 .dif-item p {
@@ -3346,6 +3445,63 @@ footer::after {
   color: #333;
 }
 
+/* ===== Cards de servicos: icones sem fundo + categoria ===== */
+.card-categoria {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #7f0505;
+  background: linear-gradient(135deg, rgba(136, 6, 6, 0.12), rgba(136, 6, 6, 0.05));
+  border: 1px solid rgba(136, 6, 6, 0.2);
+  text-align: center;
+}
+
+.service-icon {
+  width: 100px;
+  height: 100px;
+  border-radius: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  background: linear-gradient(145deg, #ffffff, #fff4f4);
+  border: 1px solid rgba(136, 6, 6, 0.16);
+  box-shadow:
+    0 10px 24px rgba(136, 6, 6, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  transition: transform 0.35s ease, box-shadow 0.35s ease, filter 0.35s ease;
+}
+
+.service-icon i {
+  background: linear-gradient(180deg, #7a0303, #b31217);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.service-icon.endodontia i { font-size: 2.4rem; }
+.service-icon.protese i { font-size: 2.2rem; }
+.service-icon.cirurgia i { font-size: 2.3rem; }
+.service-icon.implantes i { font-size: 2.2rem; }
+
+.card-servico:hover .service-icon {
+  transform: translateY(-6px) scale(1.08) rotate(-2deg);
+  box-shadow:
+    0 16px 34px rgba(136, 6, 6, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  filter: saturate(1.08);
+}
+
+.card-servico h4,
+.card-servico .card-categoria {
+  text-align: center;
+}
+
 .rating-text strong {
   color: #722F37;
   font-size: 1.3em;
@@ -3485,11 +3641,10 @@ footer::after {
 }
 
 .apresentacao-container {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 40px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(420px, 0.9fr);
+  align-items: start;
+  gap: 34px;
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -3558,17 +3713,20 @@ footer::after {
 }
 
 .apresentacao-imagem {
-  flex: 1 1 35%;
+  width: 100%;
   position: relative;
   align-self: flex-start;
-  margin-top: 25px;
+  margin-top: 10px;
+  max-width: 100%;
 }
 
 .apresentacao-imagem img {
   width: 100%;
+  aspect-ratio: 4 / 5;
   border-radius: 15px;
   box-shadow: 0 6px 25px rgba(0,0,0,0.15);
   object-fit: cover;
+  object-position: center 16%;
   transition: transform 0.3s ease;
   border: 3px solid rgba(136, 6, 6, 0.1);
 }
@@ -3584,7 +3742,7 @@ footer::after {
   }
 
   .apresentacao-container {
-    flex-direction: column;
+    grid-template-columns: 1fr;
     align-items: center;
     gap: 30px;
   }
@@ -4056,7 +4214,13 @@ header {
 /* Melhorar transição do header para body */
 header + section,
 header ~ section:first-of-type {
-  margin-top: -1px;
+  margin-top: -18px;
+}
+
+.page-home header + section,
+.page-home header ~ section:first-of-type {
+  border-top-left-radius: 22px;
+  border-top-right-radius: 22px;
 }
 
 /* ===== REDES SOCIAIS GERAL ===== */
@@ -4166,4 +4330,807 @@ footer .social-links a.tiktok {
 footer .social-links a.tiktok:hover {
   background-color: #333333;
   border-color: #333333;
+}
+
+/* ===== Refinamento visual moderno ===== */
+:root {
+  --brand-primary: #880606;
+  --brand-primary-soft: #b31217;
+  --surface-glass: rgba(255, 255, 255, 0.74);
+  --shadow-strong: 0 18px 45px rgba(136, 6, 6, 0.18);
+}
+
+.btn-agendar,
+.btn-avaliacoes {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  will-change: transform;
+}
+
+.btn-agendar:hover,
+.btn-avaliacoes:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: var(--shadow-strong);
+  filter: saturate(1.08);
+}
+
+.btn-agendar:active,
+.btn-avaliacoes:active {
+  transform: translateY(-1px) scale(0.99);
+}
+
+.card,
+.card-mais,
+.card-avaliacao {
+  background: var(--surface-glass);
+  backdrop-filter: blur(10px);
+}
+
+/* Remove vídeos do Instagram da landing page */
+.video-doutor-wrapper,
+.video-consultorio-wrapper,
+.card-video,
+.videos-container {
+  display: none !important;
+}
+
+.emergencia-cta {
+  margin-top: 28px;
+  display: flex;
+  justify-content: center;
+}
+
+.emergencia-cta .btn-agendar {
+  text-decoration: none;
+}
+
+/* ===== Premium: body e sistema de botões ===== */
+body {
+  color: #1f2430;
+  background:
+    radial-gradient(circle at 8% 12%, rgba(179, 18, 23, 0.08) 0%, transparent 34%),
+    radial-gradient(circle at 92% 88%, rgba(136, 6, 6, 0.06) 0%, transparent 36%),
+    linear-gradient(180deg, #ffffff 0%, #fbfbfd 35%, #f4f5f8 100%);
+}
+
+body::before {
+  opacity: 0.42;
+  background:
+    radial-gradient(circle at 15% 22%, rgba(114, 47, 55, 0.05) 0%, transparent 52%),
+    radial-gradient(circle at 85% 78%, rgba(26, 26, 26, 0.03) 0%, transparent 54%),
+    repeating-linear-gradient(
+      135deg,
+      transparent,
+      transparent 10px,
+      rgba(136, 6, 6, 0.015) 10px,
+      rgba(136, 6, 6, 0.015) 11px
+    );
+}
+
+:where(
+  .btn-agendar,
+  .btn-avaliacoes,
+  .footer-link-mapa,
+  .social-links a,
+  .ghost-link
+) {
+  border-radius: 14px;
+  border: 1px solid rgba(136, 6, 6, 0.14);
+  box-shadow:
+    0 6px 14px rgba(33, 38, 45, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  transition:
+    transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.22s ease,
+    border-color 0.22s ease;
+}
+
+:where(
+  .btn-agendar,
+  .btn-avaliacoes,
+  .footer-link-mapa,
+  .social-links a,
+  .ghost-link
+):hover {
+  transform: translateY(-3px);
+  filter: saturate(1.08);
+  border-color: rgba(136, 6, 6, 0.3);
+  box-shadow:
+    0 14px 28px rgba(136, 6, 6, 0.2),
+    0 2px 0 rgba(255, 255, 255, 0.45) inset;
+}
+
+:where(
+  .btn-agendar,
+  .btn-avaliacoes,
+  .footer-link-mapa,
+  .social-links a,
+  .ghost-link
+):active {
+  transform: translateY(0) scale(0.98);
+  box-shadow:
+    0 8px 16px rgba(136, 6, 6, 0.18),
+    0 1px 0 rgba(255, 255, 255, 0.35) inset;
+}
+
+:where(
+  .btn-agendar,
+  .btn-avaliacoes,
+  .footer-link-mapa,
+  .social-links a,
+  .ghost-link
+):focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px rgba(255, 255, 255, 0.95),
+    0 0 0 6px rgba(136, 6, 6, 0.45);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where(
+    .btn-agendar,
+    .btn-avaliacoes,
+    .footer-link-mapa,
+    .social-links a,
+    .ghost-link
+  ) {
+    transition: none;
+  }
+}
+
+/* ===== Home: refinamento premium geral ===== */
+.page-home {
+  background:
+    radial-gradient(circle at 8% 10%, rgba(136, 6, 6, 0.14) 0%, rgba(136, 6, 6, 0.02) 28%, transparent 48%),
+    radial-gradient(circle at 92% 88%, rgba(114, 47, 55, 0.1) 0%, rgba(114, 47, 55, 0.02) 30%, transparent 52%),
+    linear-gradient(160deg, #fbfcff 0%, #f6f8fd 32%, #eef2f9 65%, #f9fbff 100%);
+}
+
+.page-home :is(
+  .btn-agendar,
+  .btn-avaliacoes,
+  .footer-link-mapa
+) {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  transition:
+    transform 0.24s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.24s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.24s ease,
+    background 0.24s ease,
+    border-color 0.24s ease;
+}
+
+.page-home :is(
+  .btn-agendar,
+  .btn-avaliacoes,
+  .footer-link-mapa
+)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 20%, rgba(255,255,255,0.35) 45%, transparent 70%);
+  transform: translateX(-130%);
+  transition: transform 0.6s ease;
+  pointer-events: none;
+}
+
+.page-home :is(
+  .btn-agendar,
+  .btn-avaliacoes,
+  .footer-link-mapa
+):hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 16px 30px rgba(136, 6, 6, 0.18);
+  filter: saturate(1.08);
+}
+
+.page-home :is(
+  .btn-agendar,
+  .btn-avaliacoes,
+  .footer-link-mapa
+):hover::after {
+  transform: translateX(130%);
+}
+
+.page-home :is(
+  .btn-agendar,
+  .btn-avaliacoes,
+  .footer-link-mapa
+):active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+.page-home :is(
+  .btn-agendar,
+  .btn-avaliacoes,
+  .footer-link-mapa,
+  .social-links a,
+  .social-links-header a,
+  .whatsapp-float
+):focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px rgba(255,255,255,0.94),
+    0 0 0 6px rgba(136, 6, 6, 0.45),
+    0 12px 28px rgba(136, 6, 6, 0.2);
+}
+
+.page-home .btn-agendar,
+.page-home .btn-avaliacoes {
+  background-size: 180% 180%;
+  animation: none;
+}
+
+.page-home .btn-agendar {
+  background-image: linear-gradient(135deg, #ffffff 0%, #fff7f7 45%, #ffe8e8 100%);
+  border: 1px solid rgba(136, 6, 6, 0.2);
+  box-shadow:
+    0 10px 22px rgba(136, 6, 6, 0.2),
+    inset 0 1px 0 rgba(255,255,255,0.92);
+}
+
+.page-home .btn-avaliacoes {
+  background-image: linear-gradient(135deg, #7f0505 0%, #a70707 52%, #d22121 100%);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+.page-home .whatsapp-float {
+  box-shadow:
+    0 16px 30px rgba(15, 135, 76, 0.35),
+    0 0 0 1px rgba(255,255,255,0.35) inset;
+}
+
+/* Preserva layout/interação do carrossel e lightbox */
+.page-home .carousel-btn,
+.page-home .lightbox-btn {
+  overflow: visible;
+}
+
+/* Ajuste fino: CTAs principais mais bonitos e consistentes */
+.page-home .btn-agendar {
+  border-radius: 16px;
+  padding: 15px 28px;
+  min-height: 56px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  gap: 12px;
+}
+
+.page-home .btn-agendar i,
+.page-home .btn-agendar span,
+.page-home .btn-avaliacoes {
+  position: relative;
+  z-index: 1;
+}
+
+/* Remove efeito antigo que criava "mancha" no centro */
+.page-home .btn-agendar::before {
+  content: none !important;
+}
+
+.page-home .btn-agendar i {
+  transition: transform 0.24s ease;
+}
+
+.page-home .btn-agendar:hover i {
+  transform: translateX(3px) scale(1.04);
+}
+
+.page-home .emergencia-cta .btn-agendar,
+.page-home .apresentacao-texto .btn-agendar {
+  width: min(100%, 460px);
+  justify-content: center;
+}
+
+.page-home .btn-avaliacoes {
+  border-radius: 16px;
+  min-height: 54px;
+  padding: 14px 28px;
+}
+
+/* ===== Ajuste de proporcao das sections (texto + fotos) ===== */
+.page-home section {
+  max-width: 1500px;
+  padding-left: clamp(20px, 4vw, 48px);
+  padding-right: clamp(20px, 4vw, 48px);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.72)),
+    radial-gradient(circle at top right, rgba(136, 6, 6, 0.08), transparent 45%);
+  border: 1px solid rgba(136, 6, 6, 0.09);
+  box-shadow:
+    0 14px 36px rgba(28, 33, 45, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(3px);
+  border-radius: 24px;
+}
+
+.page-home .sobre {
+  overflow: visible;
+}
+
+.page-home .sobre-container {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.65fr);
+  align-items: center;
+  gap: clamp(24px, 3vw, 42px);
+}
+
+.page-home .texto-sobre {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.page-home .fotos-doutor {
+  width: 100%;
+  max-width: 430px;
+  justify-self: end;
+}
+
+.page-home .fotos-doutor.carousel-container {
+  width: 100%;
+  max-width: 430px;
+}
+
+@media (max-width: 1200px) {
+  .page-home .sobre-container {
+    grid-template-columns: 1fr;
+  }
+
+  .page-home .fotos-doutor {
+    justify-self: center;
+    max-width: 540px;
+  }
+
+  .page-home .fotos-doutor.carousel-container {
+    max-width: 540px;
+  }
+}
+
+/* ===== Refinamento premium: seção consultório ===== */
+.page-home .consultorio {
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.9), rgba(248, 251, 255, 0.82)),
+    radial-gradient(circle at 88% 14%, rgba(136, 6, 6, 0.08), transparent 42%);
+  border: 1px solid rgba(136, 6, 6, 0.1);
+  box-shadow:
+    0 18px 40px rgba(31, 36, 48, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+.page-home .consultorio h3 {
+  margin-bottom: 18px;
+}
+
+.page-home .descricao-consultorio {
+  max-width: 900px;
+  font-size: 1.12em;
+  color: #3f4655;
+  margin-bottom: 34px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(136, 6, 6, 0.06), rgba(136, 6, 6, 0.02));
+  border: 1px solid rgba(136, 6, 6, 0.12);
+}
+
+.page-home .galeria-consultorio.carousel-container {
+  border-radius: 24px;
+  border: 1px solid rgba(136, 6, 6, 0.14);
+  box-shadow:
+    0 18px 44px rgba(22, 27, 35, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  overflow: hidden;
+}
+
+.page-home .galeria-consultorio::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 72%, rgba(18, 23, 34, 0.14) 100%);
+}
+
+.page-home .galeria-consultorio .carousel-slide img {
+  border-radius: 0;
+  border: 0;
+  box-shadow: none;
+}
+
+.page-home .galeria-consultorio .carousel-btn {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(136, 6, 6, 0.2);
+  box-shadow: 0 10px 24px rgba(18, 24, 37, 0.2);
+}
+
+.page-home .galeria-consultorio .carousel-btn:hover:not(.disabled) {
+  background: #fff;
+  box-shadow: 0 14px 32px rgba(136, 6, 6, 0.26);
+}
+
+/* ===== Refinamento premium: seção emergência ===== */
+.page-home .emergencia {
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.92), rgba(249, 252, 255, 0.8)),
+    radial-gradient(circle at 82% 16%, rgba(136, 6, 6, 0.08), transparent 44%);
+  border: 1px solid rgba(136, 6, 6, 0.12);
+  box-shadow:
+    0 16px 38px rgba(31, 36, 48, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.86);
+}
+
+.page-home .emergencia h3 {
+  font-size: clamp(1.8rem, 2.5vw, 2.2rem);
+  margin-bottom: 16px;
+}
+
+.page-home .emergencia .descricao {
+  max-width: 760px;
+  margin: 0 auto 36px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(136, 6, 6, 0.1);
+  background: linear-gradient(135deg, rgba(136, 6, 6, 0.06), rgba(136, 6, 6, 0.02));
+}
+
+.page-home .cards-emergencia {
+  gap: 22px;
+}
+
+.page-home .emergencia .card {
+  border-top: 0;
+  border-left: 4px solid rgba(136, 6, 6, 0.9);
+  border-radius: 16px;
+  background: linear-gradient(165deg, #ffffff 0%, #fcfcff 100%);
+  box-shadow:
+    0 10px 26px rgba(22, 27, 35, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.82);
+  padding: 30px 24px;
+}
+
+.page-home .emergencia .card h4 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.page-home .emergencia .card h4::before {
+  content: "";
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
+  background: linear-gradient(145deg, rgba(136, 6, 6, 0.16), rgba(136, 6, 6, 0.06));
+  border: 1px solid rgba(136, 6, 6, 0.2);
+  box-shadow: 0 6px 14px rgba(136, 6, 6, 0.12);
+}
+
+.page-home .emergencia .card:first-child h4::before {
+  content: "7";
+  color: #880606;
+  font-weight: 800;
+  font-size: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-home .emergencia .card:last-child h4::before {
+  content: "!";
+  color: #880606;
+  font-weight: 900;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-home .emergencia-cta {
+  margin-top: 30px;
+}
+
+.page-home .emergencia-cta .btn-agendar {
+  min-height: 58px;
+  box-shadow:
+    0 14px 30px rgba(136, 6, 6, 0.22),
+    inset 0 1px 0 rgba(255,255,255,0.86);
+}
+
+/* ===== Sections com simbolos odontologicos em movimento ===== */
+.page-home section {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.page-home section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 18% 16%, rgba(136, 6, 6, 0.07), transparent 42%),
+    radial-gradient(circle at 84% 78%, rgba(114, 47, 55, 0.06), transparent 44%);
+  z-index: -2;
+  pointer-events: none;
+}
+
+.page-home section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260' viewBox='0 0 260 260'%3E%3Cg fill='none' stroke='rgba(136,6,6,0.24)' stroke-width='2.2'%3E%3Cpath d='M130 66c-24 0-38 16-38 39 0 25 10 54 20 65 6 7 13 7 18 0 5-9 6-22 10-22s5 13 10 22c5 7 12 7 18 0 10-11 20-40 20-65 0-23-14-39-38-39z'/%3E%3Cpath d='M62 186h20M72 176v20'/%3E%3Cpath d='M198 76l7 7M205 76l-7 7'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 220px 220px;
+  opacity: 0.24;
+  z-index: -1;
+  pointer-events: none;
+  animation: dentalSectionFlow 30s linear infinite;
+}
+
+.page-home .sobre {
+  overflow: visible;
+}
+
+@keyframes dentalSectionFlow {
+  0% { background-position: 0 0; }
+  100% { background-position: 220px 180px; }
+}
+
+@media (max-width: 768px) {
+  .page-home {
+    background:
+      radial-gradient(circle at 10% 8%, rgba(136, 6, 6, 0.08) 0%, transparent 34%),
+      linear-gradient(180deg, #fbfcff 0%, #f2f5fb 100%);
+  }
+
+  .page-home section {
+    border-radius: 18px;
+    box-shadow:
+      0 8px 20px rgba(28, 33, 45, 0.06),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  }
+
+  .page-home section::after {
+    opacity: 0.1;
+    background-size: 180px 180px;
+    animation-duration: 42s;
+  }
+}
+
+/* Failsafe: evita sumir conteudo caso animação falhe */
+.page-home section,
+.page-home .card,
+.page-home .card-mais,
+.page-home .dif-item,
+.page-home .video-card {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* Otimizacoes extras para mobile */
+@media (max-width: 768px) {
+  .page-home section {
+    padding: 56px 16px !important;
+    border-radius: 16px !important;
+    margin-bottom: 14px;
+  }
+
+  .page-home h3 {
+    font-size: 1.55rem !important;
+    line-height: 1.22;
+    letter-spacing: 0.02em;
+  }
+
+  .page-home .descricao-consultorio,
+  .page-home .descricao-servicos,
+  .page-home .subtitulo-avaliacoes,
+  .page-home .intro-mais-atendimentos,
+  .page-home .subtitulo-sorrisos {
+    font-size: 1rem !important;
+    line-height: 1.7 !important;
+    margin-bottom: 26px !important;
+  }
+
+  .page-home .cards-servicos,
+  .page-home .cards-mais,
+  .page-home .diferenciais,
+  .page-home .cards-avaliacoes {
+    gap: 16px !important;
+  }
+
+  .page-home .card,
+  .page-home .card-servico,
+  .page-home .card-mais,
+  .page-home .card-avaliacao,
+  .page-home .dif-item {
+    border-radius: 14px;
+    padding: 22px 16px !important;
+  }
+}
+
+/* ===== Tipografia profissional (Poppins) ===== */
+body {
+  font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  letter-spacing: 0.01em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
+p, li, a, span, button, input, textarea {
+  font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+p, li {
+  line-height: 1.75;
+  color: #2f3441;
+}
+
+/* ===== Efeitos extras para CTA ===== */
+@keyframes ctaSoftPulse {
+  0%, 100% {
+    box-shadow:
+      0 10px 22px rgba(136, 6, 6, 0.2),
+      inset 0 1px 0 rgba(255,255,255,0.92);
+  }
+  50% {
+    box-shadow:
+      0 16px 30px rgba(136, 6, 6, 0.3),
+      0 0 0 8px rgba(136, 6, 6, 0.08),
+      inset 0 1px 0 rgba(255,255,255,0.92);
+  }
+}
+
+@keyframes ctaShimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+.page-home .btn-agendar,
+.page-home .btn-avaliacoes {
+  background-size: 220% 220%;
+  animation: ctaSoftPulse 2.8s ease-in-out infinite, ctaShimmer 3.4s linear infinite;
+}
+
+.page-home .btn-agendar:hover,
+.page-home .btn-avaliacoes:hover {
+  animation-play-state: running;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-home .btn-agendar,
+  .page-home .btn-avaliacoes {
+    animation: none;
+  }
+}
+
+/* ===== Títulos de seções mais elegantes ===== */
+.page-home h3 {
+  display: inline-block;
+  font-size: clamp(1.9rem, 3.2vw, 2.7rem);
+  letter-spacing: 0.04em;
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  line-height: 1.15;
+  text-shadow: 0 3px 14px rgba(136, 6, 6, 0.12);
+}
+
+.page-home h3::before {
+  top: -14px;
+  width: 46px;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(136, 6, 6, 0.95), rgba(136, 6, 6, 0.1));
+}
+
+.page-home h3::after {
+  width: 150px;
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #880606 0%, #b31217 58%, rgba(179, 18, 23, 0.3) 100%);
+  box-shadow: 0 4px 14px rgba(136, 6, 6, 0.22);
+  animation-duration: 2.6s;
+}
+
+.page-home .consultorio h3::after {
+  background: linear-gradient(90deg, #880606 0%, #9e1d2a 50%, rgba(158, 29, 42, 0.3) 100%);
+}
+
+.page-home .avaliacoes h3::after {
+  background: linear-gradient(90deg, #880606 0%, #7f0505 60%, rgba(127, 5, 5, 0.25) 100%);
+}
+
+@media (max-width: 768px) {
+  .page-home h3 {
+    font-size: clamp(1.45rem, 6vw, 1.8rem) !important;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    letter-spacing: 0.025em;
+  }
+
+  .page-home h3::after {
+    width: 112px;
+    height: 3px;
+  }
+}
+
+/* ===== Refino visual: Mais Atendimentos ===== */
+.page-home .mais-atendimentos {
+  background:
+    linear-gradient(155deg, rgba(255, 255, 255, 0.92), rgba(247, 250, 255, 0.82)),
+    radial-gradient(circle at 84% 14%, rgba(136, 6, 6, 0.08), transparent 44%);
+  border: 1px solid rgba(136, 6, 6, 0.1);
+  box-shadow:
+    0 16px 38px rgba(31, 36, 48, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.84);
+}
+
+.page-home .intro-mais-atendimentos {
+  max-width: 760px;
+  margin: 0 auto 36px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(136, 6, 6, 0.05), rgba(136, 6, 6, 0.015));
+  border: 1px solid rgba(136, 6, 6, 0.1);
+}
+
+.page-home .cards-mais {
+  gap: 20px;
+}
+
+.page-home .card-mais {
+  border-radius: 18px;
+  border: 1px solid rgba(136, 6, 6, 0.12);
+  box-shadow:
+    0 12px 28px rgba(22, 27, 35, 0.11),
+    inset 0 1px 0 rgba(255, 255, 255, 0.78);
+}
+
+.page-home .card-mais img {
+  height: 190px;
+}
+
+.page-home .card-mais h4 {
+  font-size: 1.24rem;
+  margin-top: 14px;
+}
+
+/* ===== Refino visual: Avaliações ===== */
+.page-home .avaliacoes {
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.92), rgba(248, 251, 255, 0.8)),
+    radial-gradient(circle at 88% 18%, rgba(136, 6, 6, 0.08), transparent 44%);
+  border: 1px solid rgba(136, 6, 6, 0.12);
+  box-shadow:
+    0 16px 40px rgba(31, 36, 48, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.86);
+}
+
+.page-home .subtitulo-avaliacoes {
+  max-width: 760px;
+  margin: 0 auto 32px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(136, 6, 6, 0.05), rgba(136, 6, 6, 0.015));
+  border: 1px solid rgba(136, 6, 6, 0.1);
+}
+
+.page-home .cards-avaliacoes {
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.page-home .reviews-error {
+  background: linear-gradient(135deg, #fff8dc, #fff3c3) !important;
+  border: 1px solid rgba(229, 177, 0, 0.45) !important;
+  border-radius: 14px !important;
+  color: #6f5600 !important;
+  box-shadow: 0 8px 24px rgba(111, 86, 0, 0.08);
 }

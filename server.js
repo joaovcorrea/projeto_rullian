@@ -15,6 +15,11 @@ const fs = require('fs').promises;
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const REVIEWS_CACHE_TTL_MS = 10 * 60 * 1000;
+let reviewsCache = {
+  data: null,
+  expiresAt: 0
+};
 
 // Middleware
 app.use(cors());
@@ -79,6 +84,58 @@ app.get('/api/config', async (req, res) => {
     res.status(500).json({
       success: false,
       error: 'Erro ao carregar configuração'
+    });
+  }
+});
+
+// Endpoint seguro para buscar comentários do Google via backend
+app.get('/api/google-reviews', async (req, res) => {
+  try {
+    const now = Date.now();
+    if (reviewsCache.data && now < reviewsCache.expiresAt) {
+      return res.json({
+        success: true,
+        ...reviewsCache.data,
+        cached: true
+      });
+    }
+
+    const config = await loadConfig();
+    if (!config.googleApiKey || !config.googlePlaceId) {
+      return res.status(400).json({
+        success: false,
+        error: 'Google Reviews não configurado no backend'
+      });
+    }
+
+    const googleUrl = `https://places.googleapis.com/v1/places/${config.googlePlaceId}?fields=id,displayName,rating,userRatingCount,reviews&languageCode=pt-BR&key=${config.googleApiKey}`;
+    const response = await fetch(googleUrl);
+    if (!response.ok) {
+      throw new Error(`Google Places retornou status ${response.status}`);
+    }
+
+    const payload = await response.json();
+    const normalized = {
+      rating: payload.rating || 0,
+      userRatingCount: payload.userRatingCount || 0,
+      reviews: payload.reviews || []
+    };
+
+    reviewsCache = {
+      data: normalized,
+      expiresAt: now + REVIEWS_CACHE_TTL_MS
+    };
+
+    res.json({
+      success: true,
+      ...normalized,
+      cached: false
+    });
+  } catch (error) {
+    console.error('Erro ao carregar Google Reviews:', error);
+    res.status(502).json({
+      success: false,
+      error: 'Falha ao consultar avaliações do Google'
     });
   }
 });

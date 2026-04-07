@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <meta name="format-detection" content="telephone=no">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -22,6 +23,8 @@
   
   <!-- Canonical URL -->
   <link rel="canonical" href="https://www.drrullianpinheiro.com.br/">
+  <link rel="alternate" hreflang="pt-BR" href="https://www.drrullianpinheiro.com.br/">
+  <link rel="alternate" hreflang="x-default" href="https://www.drrullianpinheiro.com.br/">
   
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
@@ -29,6 +32,7 @@
   <meta property="og:title" content="Dr. Rullian Pinheiro | Dentista em Curitiba | Bigorrilho">
   <meta property="og:description" content="Cirurgião-Dentista em Curitiba, Bigorrilho. Especialista em Endodontia, Próteses Dentárias e Cirurgia. Atendimento 24h de emergência. CRO PR 37902.">
   <meta property="og:image" content="https://www.drrullianpinheiro.com.br/imagens/doutor2.jpg">
+  <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Dr. Rullian Pinheiro - Cirurgião-Dentista">
@@ -213,7 +217,6 @@
         // Desktop: preconnect para todos os recursos
         const resources = [
           { href: 'https://cdnjs.cloudflare.com', crossorigin: true },
-          { href: 'https://www.instagram.com', crossorigin: true },
           { href: 'https://connect.facebook.net', crossorigin: true },
           { href: 'https://www.googletagmanager.com', crossorigin: true },
           { href: 'https://maps.googleapis.com', crossorigin: true }
@@ -226,7 +229,7 @@
           document.head.appendChild(link);
         });
         // DNS prefetch para recursos secundários
-        ['https://www.instagram.com', 'https://connect.facebook.net', 'https://www.facebook.com', 
+        ['https://connect.facebook.net', 'https://www.facebook.com', 
          'https://www.googletagmanager.com', 'https://maps.googleapis.com', 'https://maps.gstatic.com'].forEach(href => {
           const link = document.createElement('link');
           link.rel = 'dns-prefetch';
@@ -235,7 +238,7 @@
         });
       } else {
         // Mobile: apenas dns-prefetch para recursos que serão usados depois
-        ['https://www.instagram.com', 'https://www.googletagmanager.com'].forEach(href => {
+        ['https://www.googletagmanager.com'].forEach(href => {
           const link = document.createElement('link');
           link.rel = 'dns-prefetch';
           link.href = href;
@@ -353,7 +356,7 @@
   <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
 </head>
 
-<body>
+<body class="page-home">
 
 <header>
   <div class="header-background"></div>
@@ -397,7 +400,7 @@
       <img src="imagens/rp.jpg" alt="Logo Dr. Rullian Pinheiro" class="logo" width="150" height="150" loading="eager" decoding="async">
       </div>
       <h1 class="header-title">
-        <span class="title-main">Dr. Rullian Pinheiro</span>
+        <span class="title-main">Dr. Rullian Pinheiro <span class="title-tooth" aria-hidden="true"><i class="fas fa-tooth"></i></span></span>
         <span class="title-underline"></span>
       </h1>
       <h2 class="header-subtitle">
@@ -419,11 +422,18 @@
             </a>
           </div>
         </div>
-        <button class="btn-agendar" onclick="openWhatsApp('Olá, Dr. Rullian! Estou vindo do site e gostaria de iniciar um atendimento.', 'header')">
-          <i class="fab fa-whatsapp"></i>
-          <span>Agende sua consulta</span>
-          <i class="fas fa-arrow-right"></i>
-        </button>
+        <div class="header-cta-group">
+          <button class="btn-agendar" onclick="openWhatsApp('Olá, Dr. Rullian! Estou vindo do site e gostaria de iniciar um atendimento.', 'header')">
+            <i class="fab fa-whatsapp"></i>
+            <span>Agende sua consulta</span>
+            <i class="fas fa-arrow-right"></i>
+          </button>
+          <button class="btn-avaliacoes btn-emergencia-header" onclick="openWhatsApp('Olá, Dr. Rullian! Preciso de atendimento odontológico de emergência.', 'header-emergencia')">
+            <i class="fas fa-ambulance"></i>
+            <span>Atendimento de emergência</span>
+            <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -558,6 +568,12 @@
           <p>Para sua emergência dentária, conte com suporte rápido e eficiente.</p>
         </div>
       </div>
+      <div class="emergencia-cta">
+        <a class="btn-agendar" href="emergencia.html" title="Ir para página de emergência odontológica">
+          <i class="fas fa-ambulance"></i>
+          <span>Ir para página de emergência</span>
+        </a>
+      </div>
     </div>
   </section>
 
@@ -607,9 +623,10 @@
     <div class="cards-servicos">
       <div class="card card-servico">
         <div class="card-icon-wrapper">
-        <img src="imagens/endodontia.png" alt="Tratamento de canal e endodontia em Curitiba - Dr. Rullian Pinheiro" loading="lazy" width="200" height="200" decoding="async">
+          <span class="service-icon endodontia" aria-hidden="true"><i class="fas fa-tooth"></i></span>
           <div class="card-icon-glow"></div>
         </div>
+        <span class="card-categoria">Especialidade Clínica</span>
         <h4>Endodontia</h4>
         <p class="card-description">Tratamentos de canal com precisão e tecnologia moderna para preservar dentes e aliviar dores.</p>
         <div class="card-beneficios">
@@ -636,9 +653,10 @@
       </div>
       <div class="card card-servico">
         <div class="card-icon-wrapper">
-        <img src="imagens/protese.png" alt="Próteses dentárias e reabilitação oral em Curitiba - Dr. Rullian Pinheiro" loading="lazy" width="200" height="200" decoding="async">
+          <span class="service-icon protese" aria-hidden="true"><i class="fas fa-teeth-open"></i></span>
           <div class="card-icon-glow"></div>
         </div>
+        <span class="card-categoria">Reabilitação Oral</span>
         <h4>Prótese Dentária</h4>
         <p class="card-description">Reabilitação estética e funcional através de próteses personalizadas e de alta durabilidade.</p>
         <div class="card-beneficios">
@@ -665,9 +683,10 @@
       </div>
       <div class="card card-servico">
         <div class="card-icon-wrapper">
-        <img src="imagens/cirurgia.png" alt="Cirurgia odontológica e extrações em Curitiba - Dr. Rullian Pinheiro" loading="lazy" width="200" height="200" decoding="async">
+          <span class="service-icon cirurgia" aria-hidden="true"><i class="fas fa-syringe"></i></span>
           <div class="card-icon-glow"></div>
         </div>
+        <span class="card-categoria">Procedimentos Cirúrgicos</span>
         <h4>Cirurgia Odontológica</h4>
         <p class="card-description">Procedimentos seguros e minimamente invasivos para extrações e implantes dentários.</p>
         <div class="card-beneficios">
@@ -694,9 +713,10 @@
       </div>
       <div class="card card-servico">
         <div class="card-icon-wrapper">
-        <img src="imagens/protese.jpg" alt="Implantes dentários e reabilitação oral em Curitiba - Dr. Rullian Pinheiro" loading="lazy" width="200" height="200" decoding="async">
+          <span class="service-icon implantes" aria-hidden="true"><i class="fas fa-teeth"></i></span>
           <div class="card-icon-glow"></div>
         </div>
+        <span class="card-categoria">Implantodontia</span>
         <h4>Implantes Dentários</h4>
         <p class="card-description">Substituição de dentes perdidos com pinos de titânio e coroas estéticas, devolvendo função mastigatória e harmonia facial.</p>
         <div class="card-beneficios">
@@ -757,19 +777,19 @@
       </p>
       <div class="diferenciais">
         <div class="dif-item">
-          <h5>🦷 Profissional Experiente</h5>
+          <h5><span class="dif-icon"><i class="fas fa-user-doctor"></i></span><span>Profissional Experiente</span></h5>
           <p>Mais de 4 anos de experiência em urgências e tratamentos odontológicos completos.</p>
         </div>
         <div class="dif-item">
-          <h5>⚡ Atendimento Imediato</h5>
+          <h5><span class="dif-icon"><i class="fas fa-bolt"></i></span><span>Atendimento Imediato</span></h5>
           <p>Emergências tratadas com prioridade e cuidado desde o primeiro contato.</p>
         </div>
         <div class="dif-item">
-          <h5>💻 Tecnologia a Seu Favor</h5>
+          <h5><span class="dif-icon"><i class="fas fa-laptop-medical"></i></span><span>Tecnologia a Seu Favor</span></h5>
           <p>Equipamentos modernos e avaliações precisas para diagnósticos e soluções eficientes.</p>
         </div>
         <div class="dif-item">
-          <h5>🤝 Confiança e Empatia</h5>
+          <h5><span class="dif-icon"><i class="fas fa-handshake-angle"></i></span><span>Confiança e Empatia</span></h5>
           <p>Atendimento humanizado, com foco no conforto e na tranquilidade de cada paciente.</p>
         </div>
       </div>
@@ -991,63 +1011,6 @@
   <script src="app.js" defer></script>
   <script src="google-reviews.js" defer></script>
   
-  <!-- Otimização: Carregar Instagram embeds apenas quando visíveis -->
-  <script>
-    (function() {
-      // Carregar script do Instagram apenas quando necessário
-      let instagramScriptLoaded = false;
-      
-      function loadInstagramScript() {
-        if (instagramScriptLoaded) return;
-        instagramScriptLoaded = true;
-        
-        const script = document.createElement('script');
-        script.async = true;
-        script.src = 'https://www.instagram.com/embed.js';
-        script.crossOrigin = 'anonymous';
-        document.body.appendChild(script);
-      }
-      
-      // Usar Intersection Observer para carregar embeds quando visíveis
-      if ('IntersectionObserver' in window) {
-        const observer = new IntersectionObserver(function(entries) {
-          entries.forEach(function(entry) {
-            if (entry.isIntersecting) {
-              loadInstagramScript();
-              // Processar embeds visíveis
-              if (window.instgrm && typeof window.instgrm.Embeds === 'object') {
-                window.instgrm.Embeds.process();
-              }
-              observer.unobserve(entry.target);
-            }
-          });
-        }, {
-          rootMargin: '50px' // Carregar 50px antes de ficar visível
-        });
-        
-        // Observar todos os embeds do Instagram
-        document.addEventListener('DOMContentLoaded', function() {
-          const instagramEmbeds = document.querySelectorAll('.instagram-media');
-          instagramEmbeds.forEach(function(embed) {
-            observer.observe(embed);
-          });
-          
-          // Fallback: carregar após 3 segundos se nenhum embed estiver visível
-          setTimeout(function() {
-            if (!instagramScriptLoaded) {
-              loadInstagramScript();
-            }
-          }, 3000);
-        });
-      } else {
-        // Fallback para navegadores sem Intersection Observer
-        document.addEventListener('DOMContentLoaded', function() {
-          setTimeout(loadInstagramScript, 2000);
-        });
-      }
-    })();
-  </script>
-  
   <!-- Função para rastrear conversões do Google Ads -->
   <script>
     function trackConversion(location) {
@@ -1173,130 +1136,86 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Dentist",
-    "name": "Dr. Rullian Pinheiro",
-    "image": "https://www.drrullianpinheiro.com.br/imagens/doutor2.jpg",
-    "description": "Cirurgião-Dentista em Curitiba, Bigorrilho. Especialista em Endodontia, Próteses Dentárias e Cirurgia Odontológica. Atendimento 24h de emergência.",
-    "url": "https://www.drrullianpinheiro.com.br/",
-    "telephone": "+5541997484686",
-    "priceRange": "$$",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "R. Padre Anchieta, 2348",
-      "addressLocality": "Bigorrilho",
-      "addressRegion": "PR",
-      "postalCode": "80730-000",
-      "addressCountry": "BR"
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": -25.431822,
-      "longitude": -49.295651
-    },
-    "openingHoursSpecification": [
+    "@graph": [
       {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-          "Sunday"
+        "@type": "Dentist",
+        "@id": "https://www.drrullianpinheiro.com.br/#dentist",
+        "name": "Dr. Rullian Pinheiro",
+        "image": [
+          "https://www.drrullianpinheiro.com.br/imagens/doutor2.jpg",
+          "https://www.drrullianpinheiro.com.br/imagens/consultorio1.jpg"
         ],
-        "opens": "00:00",
-        "closes": "23:59"
-      }
-    ],
-    "areaServed": {
-      "@type": "City",
-      "name": "Curitiba"
-    },
-    "medicalSpecialty": [
-      "Endodontics",
-      "Prosthodontics",
-      "Oral Surgery",
-      "Dentistry"
-    ],
-    "hasCredential": {
-      "@type": "EducationalOccupationalCredential",
-      "credentialCategory": "Professional License",
-      "identifier": "CRO PR 37902"
-    },
-    "sameAs": [
-      "https://www.instagram.com/dr.rullianpinheiro",
-      "https://linktr.ee/rullianpinheiro"
-    ],
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "5",
-      "reviewCount": "3",
-      "bestRating": "5",
-      "worstRating": "1"
-    }
-  }
-  </script>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "name": "Dr. Rullian Pinheiro - Consultório Odontológico",
-    "image": "https://www.drrullianpinheiro.com.br/imagens/consultorio1.jpg",
-    "description": "Consultório odontológico moderno em Curitiba, Bigorrilho. Equipado com Raio-X no local. Atendimento de emergência 24h.",
-    "url": "https://www.drrullianpinheiro.com.br/",
-    "telephone": "+5541997484686",
-    "priceRange": "$$",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "R. Padre Anchieta, 2348",
-      "addressLocality": "Bigorrilho",
-      "addressRegion": "PR",
-      "postalCode": "80730-000",
-      "addressCountry": "BR"
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": -25.431822,
-      "longitude": -49.295651
-    },
-    "openingHours": "Mo-Su 00:00-23:59",
-    "areaServed": {
-      "@type": "City",
-      "name": "Curitiba"
-    }
-  }
-  </script>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "MedicalBusiness",
-    "name": "Dr. Rullian Pinheiro",
-    "medicalSpecialty": [
-      {
-        "@type": "MedicalSpecialty",
-        "name": "Endodontics"
+        "description": "Cirurgião-Dentista em Curitiba, Bigorrilho. Especialista em Endodontia, Próteses Dentárias e Cirurgia Odontológica. Atendimento 24h de emergência.",
+        "url": "https://www.drrullianpinheiro.com.br/",
+        "telephone": "+5541997484686",
+        "priceRange": "$$",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "R. Padre Anchieta, 2348",
+          "addressLocality": "Bigorrilho",
+          "addressRegion": "PR",
+          "postalCode": "80730-000",
+          "addressCountry": "BR"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": -25.431822,
+          "longitude": -49.295651
+        },
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+              "Sunday"
+            ],
+            "opens": "00:00",
+            "closes": "23:59"
+          }
+        ],
+        "areaServed": {
+          "@type": "City",
+          "name": "Curitiba"
+        },
+        "medicalSpecialty": [
+          "Endodontics",
+          "Prosthodontics",
+          "Oral Surgery",
+          "Dentistry"
+        ],
+        "hasCredential": {
+          "@type": "EducationalOccupationalCredential",
+          "credentialCategory": "Professional License",
+          "identifier": "CRO PR 37902"
+        },
+        "sameAs": [
+          "https://www.instagram.com/dr.rullianpinheiro",
+          "https://linktr.ee/rullianpinheiro"
+        ],
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "5",
+          "reviewCount": "3",
+          "bestRating": "5",
+          "worstRating": "1"
+        }
       },
       {
-        "@type": "MedicalSpecialty",
-        "name": "Prosthodontics"
-      },
-      {
-        "@type": "MedicalSpecialty",
-        "name": "Oral Surgery"
+        "@type": "WebSite",
+        "@id": "https://www.drrullianpinheiro.com.br/#website",
+        "url": "https://www.drrullianpinheiro.com.br/",
+        "name": "Dr. Rullian Pinheiro",
+        "inLanguage": "pt-BR",
+        "publisher": {
+          "@id": "https://www.drrullianpinheiro.com.br/#dentist"
+        }
       }
-    ],
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "R. Padre Anchieta, 2348",
-      "addressLocality": "Bigorrilho",
-      "addressRegion": "PR",
-      "postalCode": "80730-000",
-      "addressCountry": "BR"
-    },
-    "telephone": "+5541997484686"
+    ]
   }
   </script>
 

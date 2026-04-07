@@ -298,7 +298,8 @@ class Carousel {
       let lastTime = performance.now();
       let frameId = null;
       const autoplayFrame = (currentTime) => {
-        if (currentTime - lastTime >= 5000) {
+        // Tempo maior para leitura visual mais confortável.
+        if (currentTime - lastTime >= 8500) {
           this.nextSlide();
           lastTime = currentTime;
         }
@@ -517,6 +518,12 @@ if (window.innerWidth <= 768) {
 // ===== INSTAGRAM EMBEDS HANDLER =====
 (function() {
   'use strict';
+
+  // Landing modernizada: remove blocos de vídeo incorporados do Instagram.
+  document.querySelectorAll('.video-doutor-wrapper, .video-consultorio-wrapper, .card-video, .videos-container').forEach((element) => {
+    element.remove();
+  });
+  if (!document.querySelector('.instagram-media')) return;
   
   let scriptLoaded = false;
   let processingInterval = null;

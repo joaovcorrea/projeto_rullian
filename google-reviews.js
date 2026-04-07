@@ -21,51 +21,13 @@
 
 class GoogleReviews {
   constructor() {
-    // As chaves serão carregadas do backend
-    this.apiKey = '';
-    this.placeId = '';
     this.maxReviews = 6; // Número máximo de avaliações para exibir
     
     this.reviewsContainer = document.querySelector('.cards-avaliacoes');
-    this.loadConfigFromBackend().then(() => this.init());
-  }
-  
-  async loadConfigFromBackend() {
-    try {
-      const response = await fetch('/api/config');
-      const data = await response.json();
-      
-      if (data.success) {
-        this.apiKey = data.apiKey || '';
-        this.placeId = data.placeId || '';
-        
-        if (!this.apiKey || !this.placeId) {
-          console.warn('Google Reviews: Chaves API não configuradas no backend');
-        }
-      } else {
-        console.warn('Google Reviews: Erro ao carregar configuração do backend');
-      }
-    } catch (error) {
-      console.warn('Google Reviews: Não foi possível conectar ao backend. Usando valores padrão.', error);
-      // Fallback: tentar usar valores padrão se o backend não estiver disponível
-      this.apiKey = '';
-      this.placeId = '';
-    }
+    this.init();
   }
 
   async init() {
-    if (!this.apiKey || this.apiKey === '') {
-      console.warn('Google Reviews: Chave de API não configurada');
-      this.showErrorMessage('Avaliações do Google não configuradas. Configure a chave de API no backend.');
-      return;
-    }
-
-    if (!this.placeId || this.placeId === '') {
-      console.warn('Google Reviews: Place ID não configurado');
-      this.showErrorMessage('Place ID não configurado. Configure o Place ID no backend.');
-      return;
-    }
-
     try {
       await this.fetchReviews();
     } catch (error) {
@@ -75,54 +37,23 @@ class GoogleReviews {
   }
 
   async fetchReviews() {
-    // Usando Google Places API (New)
-    const url = `https://places.googleapis.com/v1/places/${this.placeId}?fields=id,displayName,rating,userRatingCount,reviews&key=${this.apiKey}`;
-    
-    // Alternativa: Google Places API (Legacy) - descomente se a nova API não funcionar
-    // const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${this.placeId}&fields=name,rating,user_ratings_total,reviews&key=${this.apiKey}&language=pt-BR`;
-    
     try {
-      const response = await fetch(url);
+      const response = await fetch('/api/google-reviews');
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       
       const data = await response.json();
-      
-      // Para a nova API
-      if (data.reviews && data.reviews.length > 0) {
-        this.displayReviews(data.reviews, data.rating, data.userRatingCount);
-      }
-      // Para a API legada (descomente se necessário)
-      // else if (data.result && data.result.reviews) {
-      //   this.displayReviews(data.result.reviews, data.result.rating, data.result.user_ratings_total);
-      // }
-      else {
-        this.showErrorMessage('Nenhuma avaliação encontrada.');
-      }
-    } catch (error) {
-      console.error('Erro na requisição:', error);
-      
-      // Tentar API legada como fallback
-      await this.fetchReviewsLegacy();
-    }
-  }
 
-  async fetchReviewsLegacy() {
-    const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${this.placeId}&fields=name,rating,user_ratings_total,reviews&key=${this.apiKey}&language=pt-BR`;
-    
-    try {
-      const response = await fetch(url);
-      const data = await response.json();
-      
-      if (data.status === 'OK' && data.result && data.result.reviews) {
-        this.displayReviews(data.result.reviews, data.result.rating, data.result.user_ratings_total);
-      } else {
-        this.showErrorMessage('Não foi possível carregar as avaliações.');
+      if (!data.success || !data.reviews || data.reviews.length === 0) {
+        this.showErrorMessage('Nenhuma avaliação encontrada.');
+        return;
       }
+
+      this.displayReviews(data.reviews, data.rating, data.userRatingCount);
     } catch (error) {
-      console.error('Erro na API legada:', error);
+      console.error('Erro ao buscar avaliações no backend:', error);
       this.showErrorMessage('Erro ao conectar com o Google.');
     }
   }
@@ -298,10 +229,10 @@ class GoogleReviews {
 // Inicializar quando o DOM estiver pronto
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
-    // new GoogleReviews(); // Descomente após configurar a API
+    new GoogleReviews();
   });
 } else {
-  // new GoogleReviews(); // Descomente após configurar a API
+  new GoogleReviews();
 }
 
 
