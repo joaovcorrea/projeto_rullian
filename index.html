@@ -261,23 +261,8 @@
   </script>
   <noscript><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"></noscript>
   
-  <!-- CSS principal - crítico, carrega normalmente -->
-  <!-- Otimização mobile: carregar CSS de forma não bloqueante -->
+  <!-- CSS principal: carregar normalmente (trick media=print no mobile atrasava FCP/LCP no Lighthouse) -->
   <link rel="stylesheet" href="css/style.css" media="all">
-  <script>
-    // No mobile, garantir que CSS não bloqueie renderização
-    (function() {
-      if (window.innerWidth <= 768) {
-        const link = document.querySelector('link[href="css/style.css"]');
-        if (link) {
-          link.media = 'print';
-          link.onload = function() {
-            this.media = 'all';
-          };
-        }
-      }
-    })();
-  </script>
   
   <!-- Otimização: CSS crítico inline para mobile (primeira dobra) -->
   <style>
@@ -342,7 +327,7 @@
     <div class="foto-doutor-header">
       <div class="foto-wrapper">
         <div class="foto-glow"></div>
-      <img src="imagens/doutor2.jpg" alt="Dr. Rullian Pinheiro - Cirurgião-Dentista em Curitiba, Bigorrilho" width="400" height="400" fetchpriority="high" decoding="async">
+      <img src="/imagens/doutor2.jpg" alt="Dr. Rullian Pinheiro - Cirurgião-Dentista em Curitiba, Bigorrilho" width="400" height="400" fetchpriority="high" decoding="sync">
       </div>
       <div class="social-links-header">
         <a href="#" onclick="event.preventDefault(); openWhatsApp('Olá, Dr. Rullian! Estou vindo do site e gostaria de iniciar um atendimento.', 'header-social'); return false;" class="whatsapp" title="WhatsApp" aria-label="Abrir WhatsApp do Dr. Rullian Pinheiro">

@@ -35,6 +35,12 @@ body {
 
 /* Otimização mobile: desabilitar background-attachment fixed */
 @media (max-width: 768px) {
+  /* Garantir que o header (LCP) não seja adiado por otimizações de renderização */
+  header {
+    content-visibility: visible;
+    contain: layout style;
+  }
+
   body {
     background-attachment: scroll;
     /* Usar fonte do sistema enquanto Poppins carrega */
