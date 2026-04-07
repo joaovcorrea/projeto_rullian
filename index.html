@@ -9,8 +9,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   
   <!-- SEO Meta Tags -->
-  <title>Dr. Rullian Pinheiro | Dentista em Curitiba | Bigorrilho | CRO PR 37902</title>
-  <meta name="description" content="Dr. Rullian Pinheiro - Cirurgião-Dentista em Curitiba, Bigorrilho. Especialista em Endodontia, Próteses Dentárias e Cirurgia. Atendimento 24h de emergência. CRO PR 37902. Agende sua consulta!">
+  <title>Dentista em Curitiba (Bigorrilho) | Dr. Rullian Pinheiro | Emergência 24h</title>
+  <meta name="description" content="Dentista em Curitiba - Bigorrilho com Dr. Rullian Pinheiro (CRO PR 37902). Endodontia, próteses, cirurgia e emergência 24h. Agende pelo WhatsApp.">
   <meta name="keywords" content="dentista curitiba, dentista bigorrilho, tratamento de canal curitiba, prótese dentária curitiba, cirurgião dentista curitiba, emergência dentária 24h, clareamento dental curitiba, implante dentário curitiba, Dr. Rullian Pinheiro, CRO PR 37902">
   <meta name="author" content="Dr. Rullian Pinheiro">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
@@ -29,8 +29,8 @@
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.drrullianpinheiro.com.br/">
-  <meta property="og:title" content="Dr. Rullian Pinheiro | Dentista em Curitiba | Bigorrilho">
-  <meta property="og:description" content="Cirurgião-Dentista em Curitiba, Bigorrilho. Especialista em Endodontia, Próteses Dentárias e Cirurgia. Atendimento 24h de emergência. CRO PR 37902.">
+  <meta property="og:title" content="Dentista em Curitiba (Bigorrilho) | Dr. Rullian Pinheiro">
+  <meta property="og:description" content="Endodontia, próteses, cirurgia e atendimento odontológico de emergência 24h em Curitiba.">
   <meta property="og:image" content="https://www.drrullianpinheiro.com.br/imagens/doutor2.jpg">
   <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1200">
@@ -42,8 +42,8 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://www.drrullianpinheiro.com.br/">
-  <meta name="twitter:title" content="Dr. Rullian Pinheiro | Dentista em Curitiba">
-  <meta name="twitter:description" content="Cirurgião-Dentista em Curitiba, Bigorrilho. Especialista em Endodontia, Próteses Dentárias e Cirurgia. Atendimento 24h.">
+  <meta name="twitter:title" content="Dentista em Curitiba (Bigorrilho) | Dr. Rullian Pinheiro">
+  <meta name="twitter:description" content="Atendimento odontológico em Curitiba com foco em urgência, canal, próteses e cirurgia.">
   <meta name="twitter:image" content="https://www.drrullianpinheiro.com.br/imagens/doutor2.jpg">
   <meta name="twitter:image:alt" content="Dr. Rullian Pinheiro - Cirurgião-Dentista">
   
@@ -380,6 +380,11 @@
         <span class="divider">|</span>
         <span class="cro-badge">CRO - PR 37902</span>
       </h2>
+      <div class="header-social-proof" aria-label="Prova social do consultório">
+        <span class="proof-chip"><i class="fas fa-star" aria-hidden="true"></i> 5,0 no Google</span>
+        <span class="proof-chip"><i class="fas fa-shield-heart" aria-hidden="true"></i> Atendimento humanizado</span>
+        <span class="proof-chip"><i class="fas fa-clock" aria-hidden="true"></i> Emergência 24h</span>
+      </div>
       <div class="header-features-container">
         <div class="header-features">
           <div class="feature-item">
@@ -862,6 +867,29 @@
     </button>
   </section>
 
+  <section class="faq-seo" id="faq">
+    <h3>Perguntas frequentes sobre atendimento odontológico em Curitiba</h3>
+    <p class="faq-intro">Informações rápidas para quem busca dentista no Bigorrilho e atendimento de emergência.</p>
+    <div class="faq-list">
+      <details>
+        <summary>Vocês atendem emergência odontológica 24h em Curitiba?</summary>
+        <p>Sim. O atendimento de emergência é realizado com contato prévio por WhatsApp ou telefone para triagem inicial e orientação mais rápida.</p>
+      </details>
+      <details>
+        <summary>Quais tratamentos o Dr. Rullian realiza no consultório?</summary>
+        <p>Entre os principais atendimentos estão tratamento de canal, próteses dentárias, cirurgias, clareamento e cuidados odontológicos gerais.</p>
+      </details>
+      <details>
+        <summary>Onde fica a clínica odontológica do Dr. Rullian?</summary>
+        <p>O consultório fica na Rua Padre Anchieta, 2348, Bigorrilho, Curitiba - PR. Você pode ver a rota no Google Maps no rodapé da página.</p>
+      </details>
+      <details>
+        <summary>Precisa de atendimento imediato?</summary>
+        <p>Se a sua necessidade for urgente, acesse também a <a href="emergencia.html" title="Página de emergência odontológica em Curitiba">página de emergência odontológica</a> para contato direto.</p>
+      </details>
+    </div>
+  </section>
+
   <!-- ===== FOOTER ===== -->
   <footer>
     <div class="footer-container">
@@ -1004,6 +1032,15 @@
       }
     }
 
+    function trackEngagement(eventName, params) {
+      if (!window.gtag) return;
+      try {
+        gtag('event', eventName, params || {});
+      } catch (e) {
+        // Falha silenciosa para nao impactar UX.
+      }
+    }
+
     // Função para abrir WhatsApp com mensagem automática (otimizada)
     function openWhatsApp(message, location) {
       // Rastrear conversão de forma não bloqueante
@@ -1021,6 +1058,21 @@
       // Abre o WhatsApp (funciona tanto no app mobile quanto no web)
       window.location.href = whatsappUrl;
     }
+
+    document.addEventListener('click', function(event) {
+      const cta = event.target.closest('.btn-agendar, .btn-avaliacoes, #whatsappFloat, .footer-link-mapa, .location-link');
+      if (!cta) return;
+
+      const label = (cta.textContent || '').trim().slice(0, 80) || cta.getAttribute('aria-label') || 'cta';
+      const pageType = document.body.classList.contains('page-home') ? 'home' : 'site';
+
+      trackEngagement('cta_click', {
+        event_category: 'engagement',
+        event_label: label,
+        cta_type: cta.className,
+        page_type: pageType
+      });
+    }, { passive: true });
   </script>
 
   <!-- Meta Pixel Code - Otimizado para não bloquear renderização -->
@@ -1185,6 +1237,36 @@
         "publisher": {
           "@id": "https://www.drrullianpinheiro.com.br/#dentist"
         }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.drrullianpinheiro.com.br/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "O Dr. Rullian faz atendimento odontologico de emergencia em Curitiba?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Sim. Ha atendimento de emergencia odontologica com contato previo pelo WhatsApp ou telefone para avaliacao inicial e orientacao imediata."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Quais tratamentos estao disponiveis no consultorio?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "O consultorio oferece tratamento de canal, proteses dentarias, cirurgia odontologica, clareamento e atendimento clinico geral com foco em cuidado humanizado."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Onde fica o consultorio do Dr. Rullian Pinheiro?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "O consultorio fica na Rua Padre Anchieta, 2348, Bigorrilho, Curitiba - PR."
+            }
+          }
+        ]
       }
     ]
   }

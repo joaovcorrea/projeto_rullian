@@ -9,8 +9,8 @@
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <meta name="googlebot" content="index, follow">
   <meta name="language" content="Portuguese">
-  <title>Dentista de Emergência em Curitiba | Dr. Rullian Pinheiro</title>
-  <meta name="description" content="Atendimento odontológico de emergência com Dr. Rullian Pinheiro em Curitiba. Dor de dente, dente quebrado, trauma e urgências com atendimento rápido.">
+  <title>Dentista de Emergência 24h em Curitiba | Dr. Rullian Pinheiro</title>
+  <meta name="description" content="Dor de dente, trauma, dente quebrado e urgências odontológicas em Curitiba. Atendimento rápido com Dr. Rullian Pinheiro. Chame no WhatsApp.">
   <link rel="canonical" href="https://www.drrullianpinheiro.com.br/emergencia.html">
   <link rel="alternate" hreflang="pt-BR" href="https://www.drrullianpinheiro.com.br/emergencia.html">
   <link rel="alternate" hreflang="x-default" href="https://www.drrullianpinheiro.com.br/emergencia.html">
@@ -19,8 +19,8 @@
   <meta property="og:locale" content="pt_BR">
   <meta property="og:site_name" content="Dr. Rullian Pinheiro">
   <meta property="og:url" content="https://www.drrullianpinheiro.com.br/emergencia.html">
-  <meta property="og:title" content="Dentista de Emergência em Curitiba | Dr. Rullian Pinheiro">
-  <meta property="og:description" content="Dor de dente, trauma, dente quebrado e urgências odontológicas com atendimento rápido em Curitiba.">
+  <meta property="og:title" content="Dentista de Emergência 24h em Curitiba | Dr. Rullian Pinheiro">
+  <meta property="og:description" content="Atendimento odontológico de urgência em Curitiba para dor intensa, trauma e dente quebrado.">
   <meta property="og:image" content="https://www.drrullianpinheiro.com.br/imagens/doutor2.jpg">
   <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1200">
@@ -29,8 +29,8 @@
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://www.drrullianpinheiro.com.br/emergencia.html">
-  <meta name="twitter:title" content="Dentista de Emergência em Curitiba | Dr. Rullian Pinheiro">
-  <meta name="twitter:description" content="Atendimento odontológico de emergência com foco em alívio rápido da dor em Curitiba.">
+  <meta name="twitter:title" content="Dentista de Emergência 24h em Curitiba | Dr. Rullian Pinheiro">
+  <meta name="twitter:description" content="Urgência odontológica em Curitiba com atendimento rápido e humanizado.">
   <meta name="twitter:image" content="https://www.drrullianpinheiro.com.br/imagens/doutor2.jpg">
   <meta name="twitter:image:alt" content="Dr. Rullian Pinheiro - Cirurgião-Dentista em Curitiba">
 
@@ -413,6 +413,29 @@
         </article>
       </div>
     </section>
+
+    <section class="emg-section faq-seo" id="faq-emergencia">
+      <h2>Perguntas frequentes sobre emergência odontológica</h2>
+      <p class="faq-intro">Respostas rápidas para quem busca dentista de urgência em Curitiba.</p>
+      <div class="faq-list">
+        <details>
+          <summary>Quando procurar um dentista de emergência?</summary>
+          <p>Dor intensa, dente quebrado, trauma, sangramento persistente e infecção são sinais de que você deve buscar atendimento imediato.</p>
+        </details>
+        <details>
+          <summary>O atendimento é somente para emergência?</summary>
+          <p>Não. Além da urgência, você também pode agendar avaliação completa para continuidade do tratamento odontológico.</p>
+        </details>
+        <details>
+          <summary>Onde fica o consultório em Curitiba?</summary>
+          <p>Estamos no Bigorrilho, na Rua Padre Anchieta, 2348. O link para o mapa está no rodapé desta página.</p>
+        </details>
+        <details>
+          <summary>Quero conhecer todos os serviços do consultório.</summary>
+          <p>Você pode acessar a <a href="index.html" title="Site principal do Dr. Rullian Pinheiro">página principal do consultório</a> para ver todos os tratamentos.</p>
+        </details>
+      </div>
+    </section>
   </main>
 
   <footer>
@@ -509,6 +532,62 @@
     <span class="sr-only">WhatsApp - Fale conosco</span>
   </a>
 
+  <script>
+    (function() {
+      function trackEngagement(eventName, params) {
+        if (!window.gtag) return;
+        try {
+          gtag('event', eventName, params || {});
+        } catch (e) {
+          // Falha silenciosa para nao impactar UX.
+        }
+      }
+
+      function trackLead(sourceLabel) {
+        if (window.gtag) {
+          try {
+            gtag('event', 'conversion', {
+              send_to: 'AW-17215723523/1e-SCMH8gd4aEIOwjJFA',
+              value: 1.0,
+              currency: 'BRL',
+              transaction_id: 'whatsapp_emergencia_' + Date.now()
+            });
+          } catch (e) {}
+        }
+
+        if (window.fbq) {
+          try {
+            fbq('track', 'Lead', {
+              content_name: sourceLabel || 'WhatsApp - Emergencia',
+              content_category: 'Conversion'
+            });
+          } catch (e) {}
+        }
+      }
+
+      document.addEventListener('click', function(event) {
+        const target = event.target.closest('a, button');
+        if (!target) return;
+
+        const isPrimaryCta = target.matches('.btn-agendar, .btn-avaliacoes, #whatsappFloat, .footer-link-mapa, .emg-link');
+        if (!isPrimaryCta) return;
+
+        const label = (target.textContent || '').trim().slice(0, 80) || target.getAttribute('aria-label') || 'cta';
+        trackEngagement('cta_click', {
+          event_category: 'engagement',
+          event_label: label,
+          cta_type: target.className || target.tagName.toLowerCase(),
+          page_type: 'emergencia'
+        });
+
+        const href = target.getAttribute('href') || '';
+        if (href.includes('wa.me') || href.startsWith('tel:') || target.id === 'whatsappFloat') {
+          trackLead(label);
+        }
+      }, { passive: true });
+    })();
+  </script>
+
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -572,6 +651,36 @@
           "url": "https://www.drrullianpinheiro.com.br/",
           "name": "Dr. Rullian Pinheiro"
         }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.drrullianpinheiro.com.br/emergencia.html#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Quando procurar um dentista de emergencia?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Dor intensa, dente quebrado, trauma, sangramento persistente e sinais de infeccao sao os principais motivos para atendimento imediato."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "O atendimento e somente para emergencia?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Nao. Alem da urgencia, o paciente pode agendar avaliacao completa para continuidade do tratamento odontologico."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Onde fica o consultorio em Curitiba?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "O consultorio fica na Rua Padre Anchieta, 2348, Bigorrilho, Curitiba - PR."
+            }
+          }
+        ]
       }
     ]
   }
