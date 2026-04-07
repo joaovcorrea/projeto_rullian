@@ -56,39 +56,10 @@
   <meta name="theme-color" content="#880606">
   <meta name="msapplication-TileColor" content="#880606">
   <meta name="msapplication-TileImage" content="/imagens/favicon.png">
-  <!-- Preload de imagens críticas para melhor performance - LCP -->
-  <!-- No mobile, preload apenas a imagem mais crítica (hero) -->
-  <script>
-    (function() {
-      const isMobile = window.innerWidth <= 768;
-      if (!isMobile) {
-        // Desktop: preload ambas as imagens críticas
-        const link1 = document.createElement('link');
-        link1.rel = 'preload';
-        link1.as = 'image';
-        link1.href = '/imagens/doutor2.jpg';
-        link1.setAttribute('fetchpriority', 'high');
-        link1.type = 'image/jpeg';
-        document.head.appendChild(link1);
-        
-        const link2 = document.createElement('link');
-        link2.rel = 'preload';
-        link2.as = 'image';
-        link2.href = '/imagens/rp.jpg';
-        link2.type = 'image/jpeg';
-        document.head.appendChild(link2);
-      } else {
-        // Mobile: preload apenas a imagem hero (mais crítica)
-        const link = document.createElement('link');
-        link.rel = 'preload';
-        link.as = 'image';
-        link.href = '/imagens/doutor2.jpg';
-        link.setAttribute('fetchpriority', 'high');
-        link.type = 'image/jpeg';
-        document.head.appendChild(link);
-      }
-    })();
-  </script>
+  <!-- Preload de imagem crítica (LCP) -->
+  <link rel="preload" as="image" href="/imagens/doutor2.jpg" fetchpriority="high" type="image/jpeg">
+  <!-- Preload leve do logo em desktop -->
+  <link rel="preload" as="image" href="/imagens/rp.jpg" media="(min-width: 769px)" type="image/jpeg">
   
   <!-- Otimização: marcar quando fontes carregarem (não bloqueante) -->
   <script>
@@ -397,7 +368,7 @@
     <div class="info-header">
       <div class="logo-wrapper">
         <div class="logo-glow"></div>
-      <img src="imagens/rp.jpg" alt="Logo Dr. Rullian Pinheiro" class="logo" width="150" height="150" loading="eager" decoding="async">
+      <img src="imagens/rp.jpg" alt="Logo Dr. Rullian Pinheiro" class="logo" width="150" height="150" loading="lazy" decoding="async">
       </div>
       <h1 class="header-title">
         <span class="title-main">Dr. Rullian Pinheiro <span class="title-tooth" aria-hidden="true"><i class="fas fa-tooth"></i></span></span>
